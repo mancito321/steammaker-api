@@ -3,4 +3,4 @@ const App= Express();
 
 App.get('/',(reg,res)=>res.send('Julian is gay'));
 
-App.listen(3000,()=>console.log('Example app listen on port 3000'))
+App.listen(process.env.PORT || 5000,()=>console.log('Example app listen on port 5000'))
