@@ -1,10 +1,12 @@
 const Express = require('express');
 const App= Express();
+var cors = require('cors')
 const connection = require('./server/dbconf/conf')
 
-const message = {"id":1,"title":"Proyectos","name":"proyectos","parent":"0","order":"1","url":"/proyectos","icon":"la la-building","active":"1","interna":"0"}
+const message = {id:1,"title":"Proyectos",name:"proyectos",parent:"0",order:"1",url:"/proyectos",icon:"la la-building",active:"1",interna:"0"}
+App.use(cors())
 App.get('/',(reg,res)=>res.send('puto is gay'));
-App.get('/hola',(reg,res)=>res.send(message));
+App.get('/hola',(reg,res)=>res.json({msg: 'This is CORS-enabled for a Single Route'}));
 App.get('/menu',(reg,res)=>{
   // connection.connect(function(err) {
   //   if (err) {
