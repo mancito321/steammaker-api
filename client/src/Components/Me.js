@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import '../App.css';
 import { Route, Redirect } from 'react-router'
 
-class Log extends Component {
+class Me extends Component {
   constructor(props) {
     super(props);
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
@@ -27,4 +27,4 @@ class Log extends Component {
   }
 }
 
-export default Log;
+export default Me;

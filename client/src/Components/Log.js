@@ -27,7 +27,7 @@ class Log extends Component {
 
   handleSubmit = event => {
     axios.post('http://localhost:5000/api/auth/login', {
-      nick: this.state.text,
+      user: this.state.text,
       password: this.state.password
     })
     .then( (response) =>{

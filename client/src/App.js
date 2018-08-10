@@ -5,6 +5,7 @@ import Home from './Home';
 import Log from './Components/Log';
 import Header from './Components/Header';
 import Me from './Components/Me';
+import Inicio from './Components/Inicio';
 import PrivateRoute from './Components/PrivateRoute';
 
 const Jule = ()=> <h1>Julian is Gay</ h1>;
@@ -23,6 +24,7 @@ class App extends Component {
           <Switch>
             <Route path='/jule' component={Jule} />
             <Route path='/me' component={Me} />
+            <Route path='/inicio' component={Inicio} />
             <Route path='/about' component={About} />
             <Route path='/login' component={Log} />
             <Route path='/' component={Home} />
