@@ -9,14 +9,15 @@ class Log extends Component {
     super(props);
     const logg = (sessionStorage.getItem('mySteamM')===null)
     this.state = {
-      text: "",
-      password: "",
-      session:logg,
+      user: "",
+      rol: "",
+      email: "",
+      password: ""    
     };
   }
 
-  validateForm() {
-    return this.state.text.length > 0 && this.state.password.length > 0;
+  validateForm() { 
+    return true ;
   }
 
   handleChange (event){
@@ -26,8 +27,10 @@ class Log extends Component {
   }
 
   handleSubmit = event => {
-    axios.post('http://localhost:5000/api/auth/login', {
-      user: this.state.text,
+    axios.post('http://localhost:5000/api/auth/register', {
+      user: this.state.text,      
+      rol: this.state.number,
+      email: this.state.email,
       password: this.state.password
     })
     .then( (response) =>{
@@ -44,48 +47,64 @@ class Log extends Component {
   }
 
   render() {
-    if (this.state.session === false) {
-      return <Redirect to='/reto' />
+    if (this.state.session === false ) {
+      return <Redirect to='/me' />
     } else{
       console.log(this.state.logged);
-      return ( 
-      <Container fluid="true">      
-         <Row className="center_full">
-          <Col md="9" xs="12" className="background_login"></Col>
-            <Col md="3" xs="12" >
-            <Container >
+      return (
+        <Container>
+          <Row>
+            <Col>
               <div className="Login">
                 <form onSubmit={this.handleSubmit}>
-                  <FormGroup id="text">
-                    <Label>Email</Label>
+                  <FormGroup id="user">
+                    <Label>user</Label>
                     <Input
                       autoFocus
                       type="text"
                       value={this.state.text}
                       onChange={this.handleChange.bind(this)}
                       />
-                  </FormGroup>
-                  <FormGroup id="password">
-                    <Label>Password</Label>
+                  </FormGroup>  
+                     <FormGroup id="rol">
+                    <Label>rol</Label>
                     <Input
+                      autoFocus
+                      type="number"
+                      value={this.state.number}
+                      onChange={this.handleChange.bind(this)}
+                      />
+                  </FormGroup>  
+                     <FormGroup id="email">
+                    <Label>email</Label>
+                    <Input
+                      autoFocus
+                      type="email"
+                      value={this.state.email}
+                      onChange={this.handleChange.bind(this)}
+                      />
+                  </FormGroup> 
+                     <FormGroup id="password">
+                    <Label>password</Label>
+                    <Input
+                      autoFocus
+                      type="password"
                       value={this.state.password}
                       onChange={this.handleChange.bind(this)}
-                      type="password"
                       />
-                  </FormGroup>
+                  </FormGroup>                
                   <Button
                     block
                     disabled={!this.validateForm()}
                     type="submit"
                     >
-                    Login
+                    registar
                   </Button>
                 </form>
               </div>
-              </Container>
             </Col>
-          </Row> 
-        </Container>       
+          </Row>
+        </Container>
       )
     }
 

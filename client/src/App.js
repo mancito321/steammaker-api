@@ -1,36 +1,26 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
-import Home from './Home';
 import Log from './Components/Log';
-import Header from './Components/Header';
 import Me from './Components/Me';
+import Challenge from './Components/Challenge';
 import Inicio from './Components/Inicio';
-import PrivateRoute from './Components/PrivateRoute';
-
-const Jule = ()=> <h1>Julian is Gay</ h1>;
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-)
+import Reg from './Components/Reg';
+import NuevoGrupo from './Components/NuevoGrupo';
+import './App.css'
 
 class App extends Component {
   render() {
     return (
-      <Router >
-        <div>
-          <Route path='/' component={Header} />
+      <Router >        
           <Switch>
-            <Route path='/jule' component={Jule} />
             <Route path='/me' component={Me} />
+            <Route path='/reto' component={Challenge} />
             <Route path='/inicio' component={Inicio} />
-            <Route path='/about' component={About} />
-            <Route path='/login' component={Log} />
-            <Route path='/' component={Home} />
-            <PrivateRoute />
-          </Switch>
-        </div>
+            <Route path='/nuevo_grupo' component={NuevoGrupo} />
+            <Route path='/register' component={Reg} /> 
+            <Route path='/' component={Log} />
+            
+          </Switch>       
       </Router>
     );
   }

@@ -7,18 +7,10 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 // Users schema if using mongoose
 // var User = require('./User');
-//Get all users
-router.get('/',(req,res)=>{
-  connection.query('SELECT * FROM users;', function (error, results, fields) {
-    if (error) throw error;
-    res.send(results)
-    return results;
-  });
-  //connection.end();
-});
-// CREATES A NEW USER
-router.get('/user/all',(req,res)=>{
-  connection.query(`SELECT * FROM users`, function (error, results, fields) {
+
+// INSTITUTION
+router.get('/institution',(req,res)=>{
+  connection.query(`SELECT * FROM institution`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -26,14 +18,16 @@ router.get('/user/all',(req,res)=>{
   //connection.end();
 });
 
-router.get('/user/:id',(req,res)=>{
-  connection.query(`SELECT * FROM users WHERE id= ${req.params.id};`, function (error, results, fields) {
+// FRANCHISE
+router.get('/franchises:id?',(req,res)=>{
+  connection.query(`SELECT * FROM franchise WHERE id_institution = ${req.query.id}`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
   });
   //connection.end();
 });
+
 
 
 module.exports = router;
