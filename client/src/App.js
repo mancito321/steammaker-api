@@ -6,21 +6,25 @@ import Challenge from './Components/Challenge';
 import Inicio from './Components/Inicio';
 import Reg from './Components/Reg';
 import NuevoGrupo from './Components/NuevoGrupo';
+import NuevoReto from './Components/NuevoReto';
+import UpFile from './Components/UpFile';
 import './App.css'
 
 class App extends Component {
   render() {
     return (
-      <Router >        
+      <Router >
           <Switch>
             <Route path='/me' component={Me} />
             <Route path='/reto' component={Challenge} />
             <Route path='/inicio' component={Inicio} />
             <Route path='/nuevo_grupo' component={NuevoGrupo} />
-            <Route path='/register' component={Reg} /> 
+            <Route path='/nuevo_reto' component={NuevoReto} />
+            <Route path='/register' component={Reg} />
+            <Route path='/uptest' component={UpFile} />
             <Route path='/' component={Log} />
-            
-          </Switch>       
+
+          </Switch>
       </Router>
     );
   }

@@ -39,12 +39,16 @@ class Header extends React.Component {
                   Retos
                 </DropdownToggle>
                 <DropdownMenu right>
+                  <Link to="/nuevo_reto">
                   <DropdownItem>
                     Nuevo reto
                   </DropdownItem>
+                  </Link>
+                  <Link to="/reto">
                   <DropdownItem>
                     Ver retos
-                  </DropdownItem>               
+                  </DropdownItem>
+                </Link>
                 </DropdownMenu>
               </UncontrolledDropdown>
                <UncontrolledDropdown nav inNavbar>
@@ -52,20 +56,20 @@ class Header extends React.Component {
                   Grupos
                 </DropdownToggle>
                 <DropdownMenu right>
-                 <Link to="/nuevo_grupo"> 
+                 <Link to="/nuevo_grupo">
                  <DropdownItem>
                    Nuevo Grupo
                 </DropdownItem></Link>
                 <DropdownItem>
                     Ver Grupos
-                </DropdownItem>                  
-                
+                </DropdownItem>
+
                 </DropdownMenu>
               </UncontrolledDropdown>
               <NavItem>
                 <NavLink onClick={()=>{sessionStorage.removeItem('mySteamM')}}><Link to="/">Salir</Link></NavLink>
               </NavItem>
-              
+
             </Nav>
           </Collapse>
         </Navbar>

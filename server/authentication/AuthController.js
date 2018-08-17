@@ -1,9 +1,20 @@
 var express = require('express');
+//Files server
+
 var router = express.Router();
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var config = require('../config');
+var cdnUse= require('./files')
+//File system module
+var fs = require('fs');
+const uuidv4 = require('uuid/v4');
+const path = require('path');
+//Used at the end
+const multer = require('multer');
+let upload = multer();
+
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 // Users schema if using mongoose
@@ -26,6 +37,52 @@ router.post('/register', function(req, res) {
     });
     res.status(200).send({ auth: true, token: token });
   });
+});
+
+
+//upload new files
+router.post('/newfiletest',upload.any(), (req, res)=> {
+  // Handling files
+
+  let formData = req.files;
+  console.log('form data', formData);
+  console.log('form body', req.body);
+  console.log('form data', formData[0]);
+  cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+  // /cidstorage/steammakers/
+  res.status(200).send("We are on test")
+
+});
+//NuevoReto
+router.post('/newreto',upload.any(), (req, res)=> {
+  var token = req.headers['x-access-token']
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  jwt.verify(token, config.secret, function(err, decoded) {
+    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
+    //Creamos los valores a colocar
+    let today= new Date();
+    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','',1,'${req.body.TextReto}','${req.body.recursos}')`;
+    //Insertamos en la db
+    let thisId=0;
+    connection.query(sql,function (err, reto) {
+      if (err) return res.status(500).send("There was a problem registering the user."+err)
+      // Respondemos
+      // console.log(req.files);
+      let formData = req.files;
+      formData.forEach((file)=>{
+        console.log(file.fieldname);
+        cdnUse.upFiles('steammakers/reto/retos/'+reto.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
+      })
+      // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+      res.status(200).send("send")
+    })
+
+  });
+  // let formData = req.files;
+  // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+  // /cidstorage/steammakers/
+  // res.status(200).send("We are on test")
+
 });
 
 

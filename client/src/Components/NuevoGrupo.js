@@ -12,74 +12,83 @@ class NuevoGrupo extends Component {
     const logg = (sessionStorage.getItem('mySteamM')===null)
     this.state = {
       ie: "0",
-      franchise:"",
+      franchise:"0",
       name: "",
-      foto: "",
-      logo: "",
       usuario: "",
       password: "",
-      participante:"",     
+      participante:"",
       participantes:[],
       franchises : [],
       institutions : []
     };
   }
 
-  validateForm() { 
-     return this.state.participante.length;
+  validateForm() {
+     true ? true : false;
+  }
+  franchiseForm() {
+     return this.state.ie > 0;
   }
 
   handleChange (event){
     this.setState({
       [event.target.id]: event.target.value
-    });  
- 
+    });
+
     axios.get('http://localhost:5000/group/franchises',{
       params:{
         id: this.state.ie
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        franchises: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed  
-     console.log(this.state.franchise) 
-     }); 
+    // always executed
+     console.log(this.state.participante.length)
+     });
   }
-  componentDidMount(){ 
- 
+  componentDidMount(){
+
      axios.get('http://localhost:5000/group/institution')
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        institutions: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
-     .then(()=> {  
-     }); 
+     .then(()=> {
+     });
   }
 
   handleSubmit = event => {
-    axios.post('http://localhost:5000/group/register', {
-      user: this.state.usuario,      
+    console.log({
+      user: this.state.usuario,
       ie: this.state.text,
       franchise:this.state.franchise,
       name: this.state.name,
-      foto: this.state.foto,
-      logo: this.state.logo,
       usuario: this.state.usuario,
       password: this.state.password,
-      participante:this.state.participante,      
+      participante:this.state.participante,
+    });
+    return true
+    axios.post('http://localhost:5000/group/register', {
+      user: this.state.usuario,
+      ie: this.state.text,
+      franchise:this.state.franchise,
+      name: this.state.name,
+      usuario: this.state.usuario,
+      password: this.state.password,
+      participante:this.state.participante,
     })
-    .then( (response) =>{ 
+    .then( (response) =>{
       sessionStorage.setItem('mySteamM', JSON.stringify(response.data));
       this.setState({
         session: false
@@ -91,20 +100,20 @@ class NuevoGrupo extends Component {
     event.preventDefault();
   }
 
-  render() {       
+  render() {
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
       try{
-        return (  
-      <div>            
+        return (
+      <div>
       <Container fluid="true">
        <Row>
        <Col md="2" className="nav_cont"><Nav/></Col>
        <Col md="2"></Col>
-       <Col md="10" xs="12" className="contenido_general">        
+       <Col md="10" xs="12" className="contenido_general">
        <Container className="Contenido_general">
-       <Row> 
+       <Row>
        <Col md="12">
        <h2 className="titulo">GRUPOS</h2><small>Nuevo Grupo</small>
        </Col>
@@ -115,33 +124,34 @@ class NuevoGrupo extends Component {
         <Col md="3" xs="12">
          <FormGroup id="ie">
            <Label>Institucion Educativa</Label>
-          <Input type="select" value={this.state.ie} name="select" id="ie"  onChange={this.handleChange.bind(this)} >
-           <option value='0'>Seleccione una institucion</option>      
+          <Input type="select" name="select" defaultValue={this.state.ie} id="ie" onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >
+           <option value='0'>Seleccione una institución</option>
           {
-            this.state.institutions.map(function(item, i){                   
+            this.state.institutions.map(function(item, i){
              return (
-                 <option value={item.id} key={i}>{item.name}</option>             
+                 <option value={item.id} key={i}>{item.name}</option>
              );
            }.bind(this))
-          }           
+          }
           </Input>
-         </FormGroup>  
+         </FormGroup>
         </Col>
         <Col md="3" xs="12">
          <FormGroup id="franchise">
            <Label>Sede</Label>
-          <Input type="select" name="select"  onChange={this.handleChange.bind(this)} >
+          <Input type="select" disabled={!this.franchiseForm()} name="select"  onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >
+             <option value='0'>Seleccione una sede</option>
              {
-            this.state.franchises.map(function(item, i){                   
+            this.state.franchises.map(function(item, i){
              return (
-                 <option selected  id="franchise" value={this.state.select} key={i}>{item.name}</option>             
+                 <option  id="franchise" value={this.state.select} key={i}>{item.name}</option>
              );
            }.bind(this))
-          }   
+          }
           </Input>
-         </FormGroup>  
-        </Col>                         
-          
+         </FormGroup>
+        </Col>
+
         </Row>
         <Row>
           <Col md="3" xs="12">
@@ -149,7 +159,7 @@ class NuevoGrupo extends Component {
             <Label>Nombre del grupo</Label>
             <Input  type="text" id="name"  onChange={this.handleChange.bind(this)} />
           </FormGroup>
-        </Col>  
+        </Col>
         </Row>
         </Container>
         <Container className="form_margin">
@@ -160,54 +170,54 @@ class NuevoGrupo extends Component {
                  <Col md="3" xs="12">
                   <FormGroup id="name_participant">
                    <Label>Nombre Completo</Label>
-                   <Input  type="text"  id="nombre"/>
+                   <Input  type="text"  id="participante"  onChange={this.handleChange.bind(this)}/>
                   </FormGroup>
-                  <Col md="12" className="center"> <Button className="ingresar_participante" disabled={!this.validateForm()} onClick={this.add_participante.bind(this)} >ingresar</Button></Col> 
-                </Col> 
+                  <Col md="12" className="center"> <Button className="ingresar_participante" disabled={!this.validateForm()} onClick={this.add_participante.bind(this)} >ingresar</Button></Col>
+                </Col>
                  <Col md="9" xs="12">
                   <Col md="12"><div className="header_participants">
                    <Row>
                      <Col md="9" className="center">Nombre</Col>
                      <Col md="3" className="center">Remover</Col>
                    </Row>
-                  </div></Col>           
-                  <Col md="12"><div className="cont_participants">                  
+                  </div></Col>
+                  <Col md="12"><div className="cont_participants">
                   {
-                      this.state.participantes.map(function(item, i){                   
+                      this.state.participantes.map(function(item, i){
                       return (
                         <Row key={'Row'+i}>
-                        <Col md="10" key={item}>{item}</Col> 
+                        <Col md="10" key={item}>{item}</Col>
                         <Col md="2" key={i} onClick={this.delete_participante.bind(this,item)} >delete</Col>
-                        </Row>                  
+                        </Row>
                         );
                      }.bind(this))
-                   } 
-                  </div></Col>           
-                </Col>                
+                   }
+                  </div></Col>
+                </Col>
               </Row>
         </Container>
-         <Container className="form_margin">         
+         <Container className="form_margin">
               <Row>
               <Col md="6">
               <FormGroup id="participantes">
           <Label for="exampleFile">Foto de los participantes</Label>
-          <Input type="file" name="file" id="foto" onChange={this.handleChange.bind(this)} />
+          <Input type="file" name="file" id="foto" />
           <FormText color="muted">
           Advertencia sobre formato y peso del contenido a cargar
           </FormText>
         </FormGroup>
-        </Col> 
+        </Col>
               </Row>
                <Row>
               <Col md="6">
               <FormGroup id="logo">
           <Label for="exampleFile">Logo del grupo</Label>
-          <Input type="file" name="file" id="logo" onChange={this.handleChange.bind(this)} />
+          <Input type="file" name="file" id="logo" />
           <FormText color="muted">
            Advertencia sobre formato y peso del contenido a cargar
           </FormText>
         </FormGroup>
-        </Col> 
+        </Col>
               </Row>
         </Container>
         <Container className="form_margin">
@@ -223,7 +233,7 @@ class NuevoGrupo extends Component {
                       Caracteristicas del nombre de usuario
                    </FormText>
                  </FormGroup>
-                </Col>               
+                </Col>
               </Row>
                <Row>
                 <Col md="3" xs="12">
@@ -234,10 +244,10 @@ class NuevoGrupo extends Component {
                      Caracteristicas de la clave de grupo
                    </FormText>
                  </FormGroup>
-                </Col>               
+                </Col>
               </Row>
         </Container>
-           <Container className="form_margin">         
+           <Container className="form_margin">
               <Row className="center">
               <Col md="2">
               <Button block disabled={!this.validateForm()} type="submit" >
@@ -249,18 +259,18 @@ class NuevoGrupo extends Component {
                     Regresar
               </Button>
               </Col>
-                            
+
               </Row>
         </Container>
         </form>
-      </Row> 
-      </Row>        
-           
+      </Row>
+      </Row>
+
       </Container>
       </Col>
       </Row>
       </Container>
-       <footer><Footer/></footer></div>     
+       <footer><Footer/></footer></div>
       );
       }catch(error){
        return(
@@ -269,11 +279,8 @@ class NuevoGrupo extends Component {
       }
     }
   }
-  ie(){
-       this.setState(
-        this.state      
-      )
-    }
+
+
     participante(event){
       this.setState({
         participante: event.target.value
@@ -283,20 +290,20 @@ class NuevoGrupo extends Component {
   add_participante(){
     this.state.participantes.push(this.state.participante)
       this.setState(
-        this.state      
+        this.state
       )
        this.setState({
         participante: ""
       })
-     document.getElementById('nombre').value = "";
+     document.getElementById('participante').value = "";
     }
 
-  delete_participante(i){     
+  delete_participante(i){
   var array = this.state.participantes;
   var index = array.indexOf(i);
   delete array[index];
    this.setState(
-        this.state      
+        this.state
       )
   }
 }
