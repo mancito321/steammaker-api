@@ -43,7 +43,15 @@ router.get('/challenge/develops:id?',(req,res)=>{
   });
   //connection.end();
 });
-
+// Challenge
+router.get('/actual:id?',(req,res)=>{
+  connection.query(`SELECT * FROM challenge WHERE id = ${req.query.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
 router.get('/user/:id',(req,res)=>{
   connection.query(`SELECT * FROM users WHERE id= ${req.params.id};`, function (error, results, fields) {
     if (error) throw error;

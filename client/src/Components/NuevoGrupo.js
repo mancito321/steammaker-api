@@ -9,24 +9,25 @@ import Develops from './Develops'
 class NuevoGrupo extends Component {
   constructor(props) {
     super(props);
-    const logg = (sessionStorage.getItem('mySteamM')===null)
+    const logg = (sessionStorage.getItem('mySteamM')===null)    
     this.state = {
       ie: "0",
-      franchise:"",
-      name: "",
-      foto: "",
-      logo: "",
+      franchise:"0",
+      name: "",     
       usuario: "",
       password: "",
       participante:"",     
       participantes:[],
       franchises : [],
       institutions : []
-    };
+    };  
   }
 
   validateForm() { 
      return this.state.participante.length;
+  }
+  franchiseForm() { 
+     return this.state.ie > 0;
   }
 
   handleChange (event){
@@ -49,8 +50,7 @@ class NuevoGrupo extends Component {
      })
      .then(()=> {
     // always executed  
-     console.log(this.state.franchise) 
-     }); 
+         }); 
   }
   componentDidMount(){ 
  
@@ -72,9 +72,7 @@ class NuevoGrupo extends Component {
       user: this.state.usuario,      
       ie: this.state.text,
       franchise:this.state.franchise,
-      name: this.state.name,
-      foto: this.state.foto,
-      logo: this.state.logo,
+      name: this.state.name,    
       usuario: this.state.usuario,
       password: this.state.password,
       participante:this.state.participante,      
@@ -115,8 +113,8 @@ class NuevoGrupo extends Component {
         <Col md="3" xs="12">
          <FormGroup id="ie">
            <Label>Institucion Educativa</Label>
-          <Input type="select" value={this.state.ie} name="select" id="ie"  onChange={this.handleChange.bind(this)} >
-           <option value='0'>Seleccione una institucion</option>      
+          <Input type="select" name="select" defaultValue={this.state.ie} id="ie" onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >
+           <option value='0'>Seleccione una institución</option>      
           {
             this.state.institutions.map(function(item, i){                   
              return (
@@ -130,11 +128,12 @@ class NuevoGrupo extends Component {
         <Col md="3" xs="12">
          <FormGroup id="franchise">
            <Label>Sede</Label>
-          <Input type="select" name="select"  onChange={this.handleChange.bind(this)} >
+          <Input type="select" disabled={!this.franchiseForm()} name="select"  onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >
+             <option value='0'>Seleccione una sede</option>
              {
             this.state.franchises.map(function(item, i){                   
              return (
-                 <option selected  id="franchise" value={this.state.select} key={i}>{item.name}</option>             
+                 <option  id="franchise" value={this.state.select} key={i}>{item.name}</option>             
              );
            }.bind(this))
           }   
@@ -160,7 +159,7 @@ class NuevoGrupo extends Component {
                  <Col md="3" xs="12">
                   <FormGroup id="name_participant">
                    <Label>Nombre Completo</Label>
-                   <Input  type="text"  id="nombre"/>
+                   <Input  type="text"  id="participante"  onChange={this.handleChange.bind(this)}/>
                   </FormGroup>
                   <Col md="12" className="center"> <Button className="ingresar_participante" disabled={!this.validateForm()} onClick={this.add_participante.bind(this)} >ingresar</Button></Col> 
                 </Col> 
@@ -191,7 +190,7 @@ class NuevoGrupo extends Component {
               <Col md="6">
               <FormGroup id="participantes">
           <Label for="exampleFile">Foto de los participantes</Label>
-          <Input type="file" name="file" id="foto" onChange={this.handleChange.bind(this)} />
+          <Input type="file" name="file" id="foto" />
           <FormText color="muted">
           Advertencia sobre formato y peso del contenido a cargar
           </FormText>
@@ -202,7 +201,7 @@ class NuevoGrupo extends Component {
               <Col md="6">
               <FormGroup id="logo">
           <Label for="exampleFile">Logo del grupo</Label>
-          <Input type="file" name="file" id="logo" onChange={this.handleChange.bind(this)} />
+          <Input type="file" name="file" id="logo" />
           <FormText color="muted">
            Advertencia sobre formato y peso del contenido a cargar
           </FormText>
@@ -269,11 +268,8 @@ class NuevoGrupo extends Component {
       }
     }
   }
-  ie(){
-       this.setState(
-        this.state      
-      )
-    }
+ 
+
     participante(event){
       this.setState({
         participante: event.target.value
@@ -288,7 +284,7 @@ class NuevoGrupo extends Component {
        this.setState({
         participante: ""
       })
-     document.getElementById('nombre').value = "";
+     document.getElementById('participante').value = "";
     }
 
   delete_participante(i){     

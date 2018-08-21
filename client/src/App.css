@@ -24,6 +24,9 @@
 .marginT{
   margin-top: 2em;
 }
+.right{
+  text-align: right
+}
 .center_full{
       align-items: center;
   justify-content: center;
@@ -49,6 +52,40 @@
     border: 1px solid #000000;
    
 }
+.text_group{
+      display: inline-block;
+    width: 27%;
+    margin-left: 1em;
+}
+.text_group::-webkit-inner-spin-button,
+.text_group::-webkit-outer-spin-button{
+     -webkit-appearance: none; 
+  margin: 0;
+}
+button a{
+ color: white;
+}
+button a:hover{
+ color: white;
+ text-decoration: none
+}
+.participants_list li{
+  list-style: none;
+  margin:0;
+}
+.participants_list{
+  padding-left: 0;
+}
+/*TABLES*/
+.griddle-table{
+  width: 100%;
+  margin-top: 2em
+}
+.griddle-cell,
+.griddle-table-heading-cell{
+  text-align: center;
+}
+/*ENDTABLES*/
 /*LOGIN*/
 .background_login{
       background: black;

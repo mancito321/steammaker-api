@@ -11,13 +11,19 @@ class Header extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+  handleChange (event){
+    this.setState({
+      detail: event.target.name
+    });
+    
   }
   render() {
     return (
@@ -52,14 +58,15 @@ class Header extends React.Component {
                   Grupos
                 </DropdownToggle>
                 <DropdownMenu right>
-                 <Link to="/nuevo_grupo"> 
+                 <NavLink href="/nuevo_grupo"> 
                  <DropdownItem>
                    Nuevo Grupo
-                </DropdownItem></Link>
+                </DropdownItem></NavLink>
+                 <NavLink href="/grupos" name="0" onClick={this.handleChange.bind(this)}> 
                 <DropdownItem>
                     Ver Grupos
                 </DropdownItem>                  
-                
+                </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <NavItem>

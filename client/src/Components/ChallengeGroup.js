@@ -16,7 +16,11 @@ class Challenge extends Component {
     };           
   } 
   componentDidMount(){
-    axios.get('http://localhost:5000/challenge/challenge/last')
+    axios.get('http://localhost:5000/challenge/actual',{
+      params:{
+        id:this.props.id
+      }
+    })
    .then((response)=>  {    
       this.setState({
        challenge: response.data
@@ -25,7 +29,7 @@ class Challenge extends Component {
     .catch((error)=>  {
     // handle error  
      })
-     .then(()=> {
+     .then(()=> {     
     // always executed    
      }); 
   }
@@ -36,18 +40,7 @@ class Challenge extends Component {
     }else {
       try{
         return (  
-      <div>            
-      <Container fluid="true">
-       <Row>
-       <Col md="2" className="nav_cont"><Nav/></Col>
-       <Col md="2"></Col>
-       <Col md="10" xs="12" className="contenido_general">        
-       <Container className="Contenido_general">
-       <Row> 
-       <Col md="12">
-       <h2 className="titulo">INICIO</h2><small>Inicio</small>
-       </Col>
-       <Row  className="margin_container">
+      <Row  className="margin_container">
        <Col md="12"><h4 className="subtitulo">Último reto</h4></Col>
          <Col md="4" xs="12">
          <h5>{this.state.challenge[0].name}</h5>
@@ -67,16 +60,7 @@ class Challenge extends Component {
             <h5>Desarrollos</h5>
              <Develops key="develops" id={this.state.challenge[0].id}/>
         </Col>
-      </Row>
-      
-        
-      </Row>        
-           
-      </Container>
-      </Col>
-      </Row>
-      </Container>
-       <footer><Footer/></footer></div>     
+      </Row>     
       );
       }catch(error){
        return(
