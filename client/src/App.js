@@ -5,6 +5,7 @@ import Me from './Components/Me';
 import Challenge from './Components/Challenge';
 import Inicio from './Components/Inicio';
 import Reg from './Components/Reg';
+import Grupos from './Components/ver_grupo';
 import NuevoGrupo from './Components/NuevoGrupo';
 import NuevoReto from './Components/NuevoReto';
 import UpFile from './Components/UpFile';

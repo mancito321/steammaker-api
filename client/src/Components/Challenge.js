@@ -51,26 +51,14 @@ class Challenge extends Component {
        <Row  className="margin_container">
        <Col md="12"><h4 className="subtitulo">Último reto</h4></Col>
          <Col md="4" xs="12">
-         <h5>Nombre del reto</h5>
-          {
-           this.state.challenge.map(item=>{
-            return <p key={item.name.toString()} className="last_challenge">{item.name}</p>
-           })
-           }
+         <h5>{this.state.challenge[0].name}</h5>
+         <p>{this.state.challenge[0].contenido}</p>
           <h5>Fecha de publicación</h5>
 
-         {
-           this.state.challenge.map(item=>{
-            return <p key={item.ca.toString()}>{item.ca}</p>
-           })
-           }
+        <p>{this.state.challenge[0].ca}</p>
              <h5>Finalizado</h5>
 
-          {
-           this.state.challenge.map(item=>{
-            return <p key={item.fn.toString()}>{item.fn}</p>
-           })
-           }
+          <p>{this.state.challenge[0].fn}</p>
         </Col>
             <Col md="4" xs="12">
             <h5>Documentos</h5>
@@ -108,7 +96,7 @@ class Challenge extends Component {
           <Col md="12"><h4 className="subtitulo">Último reto</h4></Col>
             <Col md="4" xs="12">
             <h5>Nombre del reto</h5>
-             
+
              <h5>Fecha de publicación</h5>
 
 

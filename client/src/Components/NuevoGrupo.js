@@ -44,6 +44,9 @@ class NuevoGrupo extends Component {
   franchiseForm() {
     return this.state.ie > 0;
   }
+  franchiseForm() {
+     return this.state.ie > 0;
+  }
 
   handleChange (event){
     this.setState({
