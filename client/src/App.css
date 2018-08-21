@@ -17,7 +17,9 @@
 .App-title {
   font-size: 1.5em;
 }
-
+.red{
+  color: red
+}
 .App-intro {
   font-size: large;
 }
@@ -54,7 +56,7 @@
 }
 .text_group{
       display: inline-block;
-    width: 27%;
+    width: 100%;
     margin-left: 1em;
 }
 .text_group::-webkit-inner-spin-button,

@@ -46,7 +46,6 @@ class Grupo extends Component {
       edita:"0",
       group: [],
       challenge: [],
-      challenge_actual: [],
       participants:[]    
     };  
  
