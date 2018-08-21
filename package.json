@@ -4,7 +4,7 @@
   "description": "update current framework to other technologies ",
   "main": "server.js",
   "scripts": {
-    "client": "cd client && npm tart",
+    "client": "cd client && npm start",
     "server": "nodemon server.js",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },

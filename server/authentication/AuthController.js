@@ -65,7 +65,7 @@ router.post('/newreto',upload.any(), (req, res)=> {
     //Insertamos en la db
     let thisId=0;
     connection.query(sql,function (err, reto) {
-      if (err) return res.status(500).send("There was a problem registering the user."+err)
+      if (err) return res.status(500).send("There was a problem registering the challenge.")
       // Respondemos
       // console.log(req.files);
       let formData = req.files;
@@ -82,6 +82,57 @@ router.post('/newreto',upload.any(), (req, res)=> {
   // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
   // /cidstorage/steammakers/
   // res.status(200).send("We are on test")
+
+});
+//New group
+router.post('/newgroup',upload.any(), (req, res)=> {
+  //Validamos Token
+  var token = req.headers['x-access-token']
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  jwt.verify(token, config.secret, function(err, decoded) {
+
+    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
+    //Creamos los valores a colocar
+
+    // en olace van los participantes
+    let sql = `INSERT INTO steammakers.group(id_franchise,name) VALUES(${req.body.franchise},'${req.body.name}')`;
+    //Insertamos en la db
+    console.log('insert :'+sql);
+    connection.query(sql,function (err, grupo) {
+      if (err) console.log('fail at first'+err);
+      if (err) return res.status(500).send("There was a problem registering the group.")
+      // Respondemos
+      let formData = req.files;
+      formData.forEach((file)=>{
+        cdnUse.upFiles('steammakers/grupo/'+grupo.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
+      })
+      // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+      // Nuevos participantes
+      let newsql = `INSERT INTO participants(id_group,name) VALUES(${grupo.insertId},'${req.body.participantes}')`
+      connection.query(newsql,function (err, participants) {
+        if (err) return res.status(500).send("There was a problem registering the participants.")
+        // Respondemos
+        // Gen salt and hash
+        var salt = bcrypt.genSaltSync(8);
+        var hashedPassword = bcrypt.hashSync(req.body.password, salt);
+        // creating new user sql sentence
+        let sql = `INSERT INTO users(user,rol,email,active,password,id_group) VALUES ('${req.body.user}',2,'',1,'${hashedPassword}',${grupo.insertId})`;
+        connection.query(sql,function (err, user) {
+          if (err) return res.status(500).send("There was a problem registering the user."+err)
+          // create a token
+          console.log(user);
+          res.status(200).send("Nuevo Grupo creado");
+        });
+
+        // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+      })
+    })
+
+  });
+  // let formData = req.files;
+  // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
+  // /cidstorage/steammakers/
+
 
 });
 
