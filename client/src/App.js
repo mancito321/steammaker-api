@@ -20,9 +20,8 @@ class App extends Component {
             <Route path='/reto' component={Challenge} />
             <Route path='/inicio' component={Inicio} />
             <Route path='/nuevo_grupo' component={NuevoGrupo} />
-            <Route path='/nuevo_reto' component={NuevoReto} />
             <Route path='/register' component={Reg} />
-            <Route path='/uptest' component={UpFile} />
+            <Route path='/grupos' component={Grupos} />
             <Route path='/' component={Log} />
 
           </Switch>
