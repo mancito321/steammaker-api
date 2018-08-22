@@ -22,6 +22,12 @@ z-index: 1;
 .App-title {
   font-size: 1.5em;
 }
+.block{
+  display: block
+}
+.none{
+  display: none
+}
 .red{
   color: red
 }
