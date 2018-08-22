@@ -37,8 +37,6 @@ router.get('/challenge/documentation:id?',(req,res)=>{
 // DEVELOPS
 router.get('/challenge/develops:id?',(req,res)=>{
   connection.query(`SELECT gr.name as 'group_name',dev.* FROM development dev JOIN steammakers.group gr on gr.id = dev.id_group where dev.id_challenge = ${req.query.id}`, function (error, results, fields) {
-<<<<<<< HEAD
-=======
     if (error) throw error;
     res.send(results)
     return results;
@@ -48,18 +46,12 @@ router.get('/challenge/develops:id?',(req,res)=>{
 // Challenge
 router.get('/actual:id?',(req,res)=>{
   connection.query(`SELECT * FROM challenge WHERE id = ${req.query.id};`, function (error, results, fields) {
->>>>>>> julian
     if (error) throw error;
     res.send(results)
     return results;
   });
   //connection.end();
 });
-<<<<<<< HEAD
-
-
-=======
->>>>>>> julian
 router.get('/user/:id',(req,res)=>{
   connection.query(`SELECT * FROM users WHERE id= ${req.params.id};`, function (error, results, fields) {
     if (error) throw error;
