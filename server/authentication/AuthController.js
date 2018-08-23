@@ -95,7 +95,7 @@ router.post('/newgroup',upload.any(), (req, res)=> {
     //Creamos los valores a colocar
 
     // en olace van los participantes
-    let sql = `INSERT INTO steammakers.group(id_franchise,name) VALUES(${req.body.franchise},'${req.body.name}')`;
+    let sql = `INSERT INTO steammakers.group(id_franchise,name,numero) VALUES(${req.body.franchise},'${req.body.name}','${req.body.numero_participantes}')`;
     //Insertamos en la db
     console.log('insert :'+sql);
     connection.query(sql,function (err, grupo) {
