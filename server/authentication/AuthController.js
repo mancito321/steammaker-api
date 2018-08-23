@@ -135,6 +135,21 @@ router.post('/newgroup',upload.any(), (req, res)=> {
 
 
 });
+// Get resources
+router.get('/files',(req,res)=>{
+  console.log(req.query.id);
+  cdnUse.getFiles('steammakers/reto/retos/'+req.query.id,res)
+})
+// Get fileset
+router.get('/resources',(req,res)=>{
+  console.log(req.query.id);
+  let sql = `SELECT * FROM steammakers.challenge WHERE id=${req.query.id}`
+  connection.query(sql, (err, resourcesRes)=> {
+    if (err) return res.status(500).send("There was a problem registering the solution.")
+    // Upload files
+    res.status(200).send(resourcesRes);
+  });
+})
 // New Solution
 router.post('/solucionreto',upload.any(), function(req, res) {
   //Verify token

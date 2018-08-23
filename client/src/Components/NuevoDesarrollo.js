@@ -17,6 +17,7 @@ import Footer from './Footer'
 import Documents from './Documents'
 import Develops from './Develops'
 import DropIt from './DropIt'
+import ShowDoc from './ShowDoc'
 const axios = require('axios');
 
 class NuevoDesarrollo extends Component {
@@ -33,12 +34,37 @@ class NuevoDesarrollo extends Component {
       FileC:'',
       DescC:'',
       successM:false,
-      failM:false
+      failM:false,
+      recurso:false,
+      recursos:[]
     };
     this.onDismissu = this.onDismissu.bind(this);
     this.onDismisfail = this.onDismisfail.bind(this);
   }
-
+componentWillMount(){
+  console.log('will mount');
+  axios.get('http://localhost:5000/api/auth/resources',{
+    params: {
+    id: this.state.Retoid  }
+  })
+  .then( (response) =>{
+    // handle success
+    console.log(response);
+    let recursosR =response.data[0].recursos.split(',')
+  console.log(recursosR);
+  this.setState({
+    recursos:recursosR
+  })
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+  .then(function () {
+    // always executed
+    console.log('challenge_ok');
+  });
+}
   validateForm() {
       if (this.state.RetoS!=null) {
         return true;
@@ -55,10 +81,12 @@ class NuevoDesarrollo extends Component {
     let formData = new FormData();
     let newContenidos= []
     this.state.Contenido.map((item,i)=>{
-      if (item[0]!=null) {
+      if (item[0]!=null && typeof(item[0])) {
         formData.append(`contenido${i}`, item[0]);
+        newContenidos.push(`[${item[1]},${item[2]}]`)
+      }else {
+        newContenidos.push(`[${item[1]},${item[2]},${item[0]}]`)
       }
-      newContenidos.push(`[${item[1]},${item[2]}]`)
     })
     formData.append('Retoid', this.state.Retoid);
     formData.append('Solucion', this.state.RetoS);
@@ -104,8 +132,39 @@ class NuevoDesarrollo extends Component {
     console.log(e);
     this.setState({ failM: false });
   }
-
+  toggleRecursos=()=>{
+    if (this.state.recurso) {
+      this.setState({
+        recurso:false
+      })
+    }else {
+      this.setState({
+        recurso:true
+      })
+    }
+  }
   render() {
+    let ContentIn;
+    let recursos;
+    if (this.state.Tipo==0) {
+      ContentIn = <FormGroup id="reto">
+        <Label for="exampleFile">Contenido</Label>
+        <Input type="file" name="FileC" id="recurso-file" onChange={this.handleDropFile}/>
+        <FormText color="muted">
+          Advertencia sobre formato y peso del contenido a cargar
+        </FormText>
+      </FormGroup>
+    }else {
+      ContentIn = <FormGroup id="reto">
+        <Label for="exampleFile">Enlace de contenido</Label>
+        <Input type="text" placeholder="http://" name="FileC" id="recurso-file" onChange={this.handleChange.bind(this)}/>
+      </FormGroup>
+    }
+    if (this.state.recurso) {
+      recursos =<div>{this.state.recursos}</div>
+    }else {
+      recursos=<div></div>
+    }
     if (this.state.session) {
       return <Redirect to='/login'/>
     } else {
@@ -141,9 +200,12 @@ class NuevoDesarrollo extends Component {
                                 Documentos
                               </h4>
                               <p>
-                              Documentos-Documentos-Documentos
+                              <ShowDoc retoid={this.state.Retoid}/>
                               </p>
-                              <button>ver recursos</button>
+                              <button onClick={this.toggleRecursos}>ver recursos</button>
+                              {
+                                recursos
+                              }
                             </Col>
                           </Row>
                         </Container>
@@ -195,20 +257,13 @@ class NuevoDesarrollo extends Component {
                                   <Label for="exampleText">Tipo de contenido  </Label>
                                     <Input type="select" name="Tipo" defaultValue={this.state.Tipo} id="ie" onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >
                                       <option value='0'>Archivo</option>
-                                      <option value='1'>Imágen</option>
-                                      <option value='2'>Otro</option>
+                                      <option value='1'>Link</option>
                                     </Input>
                                   </FormGroup>
                                 </Col>
                                 <Col xs="12"></Col>
                                 <Col md="6" xs="12">
-                                  <FormGroup id="reto">
-                                    <Label for="exampleFile">Contenido</Label>
-                                    <Input type="file" name="FileC" id="recurso-file" onChange={this.handleDropFile}/>
-                                    <FormText color="muted">
-                                      Advertencia sobre formato y peso del contenido a cargar
-                                    </FormText>
-                                  </FormGroup>
+                                  {ContentIn}
                                 </Col>
                                 <Col xs="12">
                                   <FormGroup>
@@ -231,7 +286,7 @@ class NuevoDesarrollo extends Component {
                                     <Row>
                                       <Col md="4" className="center">Nombre recurso</Col>
                                       <Col md="4" className="center">Descripción</Col>
-                                      <Col md="2" className="center">Archivo</Col>
+                                      <Col md="2" className="center"></Col>
                                       <Col md="2" className="center">Remover</Col>
                                     </Row>
                                   </div></Col>
@@ -243,7 +298,7 @@ class NuevoDesarrollo extends Component {
                                           <Row key={'Row'+i} key={i}>
                                             <Col md="4" >{item[1]}</Col>
                                             <Col md="4" >{item[2]}</Col>
-                                            <Col md="2" >ver/editar</Col>
+                                            <Col md="2" ></Col>
                                             <Col md="2"  onClick={this.delete_recurso.bind(this,item)} >delete</Col>
                                           </Row>
                                         );

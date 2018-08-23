@@ -19,6 +19,11 @@ top: 10px;
 right: 10px;
 z-index: 1;
 }
+.linkDelete{
+  cursor: pointer;
+    font-weight: 600;
+    color: #FFC107;
+}
 .App-title {
   font-size: 1.5em;
 }
@@ -72,7 +77,7 @@ z-index: 1;
 }
 .text_group::-webkit-inner-spin-button,
 .text_group::-webkit-outer-spin-button{
-     -webkit-appearance: none; 
+     -webkit-appearance: none;
   margin: 0;
 }
 button a{

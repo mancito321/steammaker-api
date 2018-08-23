@@ -9,7 +9,8 @@ import {
   Input,
   Label,
   FormText,
-  Form
+  Form,
+  Alert
 } from "reactstrap";
 import Nav from './Nav'
 import Footer from './Footer'
@@ -32,7 +33,9 @@ class NuevoReto extends Component {
       recursos: [],
       RecursoName :"",
       RecursoText:"",
-      RecursoURL:""
+      RecursoURL:"",
+      successM:false,
+      failM:false
     };
   }
 
@@ -71,9 +74,12 @@ class NuevoReto extends Component {
     axios.post('http://localhost:5000/api/auth/newreto', formData,config)
     .then( (response) =>{
       console.log(response);
+      this.setState({ successM: true });
+      setTimeout(()=>{ window.location.href ="/retos" }, 2000);
     })
     .catch(function (error) {
       console.log(error);
+      this.setState({ failM: true });
     });
     event.preventDefault();
   }
@@ -81,6 +87,14 @@ class NuevoReto extends Component {
     this.setState({
       [e.target.name]:e.target.files[0]
     });
+  }
+  onDismissu(e) {
+    console.log(e);
+    this.setState({ successM: false });
+  }
+  onDismisfail(e) {
+    console.log(e);
+    this.setState({ failM: false });
   }
 
   render() {
@@ -100,6 +114,16 @@ class NuevoReto extends Component {
                       <Col md="12">
                         <h2 className="titulo">RETOS</h2>
                         <small>Nuevo Reto</small>
+                      </Col>
+                      <Col md="12">
+                        <Alert className="notificationfix" color="success" isOpen={this.state.successM} toggle={this.onDismissu}>
+                          El reto se ha subido satisfactoriamente
+                        </Alert>
+                      </Col>
+                      <Col md="12">
+                        <Alert className="notificationfix" color="danger" isOpen={this.state.failM} toggle={this.onDismisfail}>
+                          Oops! Ha ocurrido un error subiendo el reto
+                        </Alert>
                       </Col>
                       <Row className="margin_container">
                         <form onSubmit={this.handleSubmit}>
@@ -201,8 +225,8 @@ class NuevoReto extends Component {
                                   <Col md="12"><div className="header_participants">
                                     <Row>
                                       <Col md="4" className="center">Nombre recurso</Col>
-                                      <Col md="4" className="center">Enlace</Col>
-                                      <Col md="2" className="center">Remover</Col>
+                                      <Col md="4" className="center">Contenido</Col>
+                                      <Col md="2" className="center">Enlace</Col>
                                       <Col md="2" className="center">Remover</Col>
                                     </Row>
                                   </div></Col>
@@ -214,8 +238,8 @@ class NuevoReto extends Component {
                                           <Row key={'Row'+i}>
                                             <Col md="4" key={i}>{item[0]}</Col>
                                             <Col md="4" key={i}>{item[1]}</Col>
-                                            <Col md="2" key={i} onClick={this.delete_recurso.bind(this,item)} >ver/editar</Col>
-                                            <Col md="2" key={i} onClick={this.delete_recurso.bind(this,item)} >delete</Col>
+                                            <Col md="2" key={i}>{item[2]}</Col>
+                                            <Col md="2" className="linkDelete"key={i} onClick={this.delete_recurso.bind(this,item)} >delete</Col>
                                           </Row>
                                         );
                                       }.bind(this))
