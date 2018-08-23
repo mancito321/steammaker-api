@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router'
-import { Container, Row, Col,Button, FormGroup, Input , Label } from "reactstrap";
+import { Container, Row, Col,Button, FormGroup, Input , Label,Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Nav from './Nav'
 import Footer from './Footer'
-import Documents from './Documents'
-import Develops from './Develops'
+import Cha from './ChallengeGroup'
 import { RadarChart,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Radar,Legend} from 'recharts'; 
 
   const axios = require('axios'); 
@@ -13,7 +12,10 @@ class Challenge extends Component {
     super(props);
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
     this.state = {
+      modal: false,
+      modals: false,
       session:sessionchk,
+      edit:'',
       valor1:0,
       valor2:0,
       valor3:0,
@@ -31,8 +33,15 @@ class Challenge extends Component {
       valor5e:"",      
       punctuation:0,
       challenge : []
-    };           
+    };   
+    this.toggle = this.toggle.bind(this);        
   } 
+  toggle() {
+    this.setState({
+      modals: !this.state.modals
+    });
+  }
+
 
   validateForm() {
     return this.state.valor1e.length == 0 && this.state.valor2e.length == 0 && this.state.valor3e.length == 0 && this.state.valor4e.length == 0 && this.state.valor5e.length == 0 ;
@@ -45,22 +54,25 @@ class Challenge extends Component {
     })
    .then((response)=>  {    
       this.setState({
-       challenge: response.data
+       challenge: response.data,       
       });
     })
     .catch((error)=>  {
     // handle error  
      })
-     .then(()=> {     
-    // always executed  
-    console.log(this.state.challenge)  
+     .then(()=> {        
+        this.setState({
+       edit: this.state.challenge[0].edit,      
+       valor1p:this.state.challenge[0].formato,
+       valor2p:this.state.challenge[0].bigart,
+       valor3p:this.state.challenge[0].fotografico,
+       valor4p:this.state.challenge[0].video,
+       valor5p:this.state.challenge[0].equipo,      
+      }); 
+    // always executed     
      }); 
   }
-  componentDidUpdate(){
-    console.log(this.state.valor1e.length == 0 && this.state.valor2e.length == 0 && this.state.valor3e.length == 0 && this.state.valor4e.length == 0 && this.state.valor5e.length == 0 )
-  }
    handleInputChanged(e){
-    console.log(e.target.id)
     switch(e.target.id) {
     case 'valor1':
     if(e.target.value > 15){
@@ -135,10 +147,40 @@ class Challenge extends Component {
  }
  handleInputClick(){
    this.setState({
-    punctuation: (this.state.valor1+this.state.valor2+this.state.valor3+this.state.valor4+this.state.valor5)
+    punctuation: (this.state.valor1+this.state.valor2+this.state.valor3+this.state.valor4+this.state.valor5),
+    modal: !this.state.modal
   })
  }
 
+handleButtonChange(event){
+
+  axios.post('http://localhost:5000/challenge/punctuation',{    
+        id:this.props.id,
+        punctuation:this.state.punctuation,
+        punctuationT:this.state.punctuation+this.props.punctuation,     
+        editar:'none',     
+        formato: this.state.valor1p,     
+        bigart: this.state.valor2p,     
+        fotografico: this.state.valor3p,     
+        video: this.state.valor4p,     
+        equipo: this.state.valor5p,     
+    })
+   .then((response)=>  {
+      this.setState({
+                edit: 'none'
+            });
+    })
+    .catch((error)=>  {
+    // handle error  
+     })
+     .then(()=> {     
+    // always executed  
+   
+     }); 
+      this.setState({
+    modal: !this.state.modal
+  })
+}
 
   render() {       
     if (this.state.session) {
@@ -165,27 +207,25 @@ class Challenge extends Component {
         <p>{this.state.challenge[0].ca}</p>       
         </Col>
         <Col md="6">
-        <h5>Nombre del reto</h5>
-        <Button>Ver reto</Button>  
+        <h5>{this.state.challenge[0].name}</h5>
+        <Button onClick={this.toggle}>Ver reto</Button>  
         </Col>
         </Row>
-        <Row className="margin_container form_margin ">
-        <Col md="12">
-        <h5>Desarrollo del reto</h5>
-        <Button>Ver desarollo</Button>
-        </Col>
-        </Row>
+     
         <Row className="margin_container form_margin ">
         <Col md="4">
         <h5>Recursos adicionales</h5>
         </Col>
-        <Col md="4"></Col>
+        <Col md="4">
+        {this.state.challenge[0].recursos}
+        </Col>
         <Col md="4">
         <h5>Comentarios sobre el reto</h5>
         </Col>
         </Row>
         <Row className="margin_container form_margin ">
-        <Col md="4">
+
+        <Col md="4" className={this.state.edit}>
         <h5>Puntuar reto</h5>
         <Row>
           <Col md="8">Formato<p className="red">{this.state.valor1e}</p></Col>
@@ -218,11 +258,11 @@ class Challenge extends Component {
         </Col>
         <Col md="4">
         <h5 className="center">Puntaje general</h5>
-        <h1 className="center">{this.state.punctuation}</h1>
+        <h1 className="center">{this.state.challenge[0].punctuation}</h1>
         </Col>
         <Col md="4">
          <h5 className="center">Puntaje por area</h5>
-<RadarChart outerRadius={90} width={339} height={250} data={[
+<RadarChart outerRadius={90} width={420} height={250} data={[
     { subject: 'Formato', A: this.state.valor1p,  fullMark: 15 },
     { subject: 'Big Art', A: this.state.valor2p, fullMark: 30 },
     { subject: 'Registro fotográfico', A: this.state.valor3p,  fullMark: 25 },
@@ -232,12 +272,12 @@ class Challenge extends Component {
   <PolarGrid />
   <PolarAngleAxis dataKey="subject" />
   <PolarRadiusAxis angle={30} domain={[0, 100]}/>
-  <Radar name="Mike" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+  <Radar name="" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
 
   <Legend />
 </RadarChart>
       </Col>
-        <Col md="12" className="center"><Button disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
+        <Col md="12" className={this.state.edit+' center'}><Button disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
        
       </Row>
         <Col md="12" className="margin_container form_margin "></Col>  
@@ -247,6 +287,22 @@ class Challenge extends Component {
       </Container>
       </Col>
       </Row>
+        <Modal isOpen={this.state.modal} toggle={this.handleInputClick.bind(this)} className='modal-dialog-centered modal-xs'>
+          <ModalHeader toggle={this.handleInputClick.bind(this)}>CONFIRMACIÓN DE PUNTAJE</ModalHeader>
+          <ModalBody>
+            ¿Está seguro de registrar el puntaje ingresado? tenga en cuenta que luego de confirmar el puntaje no podrá cambiarlo
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.handleButtonChange.bind(this)}>Confirmar</Button>{' '}
+            <Button color="secondary" onClick={this.handleInputClick.bind(this)}>Cancelar</Button>
+          </ModalFooter>
+        </Modal>
+         <Modal isOpen={this.state.modals} toggle={this.toggle} className='modal-dialog-centered modal-lg'>
+          <ModalHeader toggle={this.toggle}></ModalHeader>
+          <ModalBody>
+          <Cha id={this.state.challenge[0].id_challenge}/>
+          </ModalBody>           
+        </Modal>  
       </Container>
        <footer><Footer/></footer></div> 
       

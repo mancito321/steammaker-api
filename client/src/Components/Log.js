@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Container, Row, Col,Button, FormGroup, Input , Label } from "reactstrap";
+import { Container, Row, Col,Button, FormGroup, Input , Label ,Alert} from "reactstrap";
 import '../App.css';
 import { Route, Redirect } from 'react-router'
 const axios = require('axios');
@@ -12,6 +12,7 @@ class Log extends Component {
       text: "",
       password: "",
       session:logg,
+      failM:false
     };
   }
 
@@ -25,7 +26,7 @@ class Log extends Component {
     });
   }
 
-  handleSubmit = event => {
+  handleSubmit (event) {
     axios.post('http://localhost:5000/api/auth/login', {
       user: this.state.text,
       password: this.state.password
@@ -37,8 +38,8 @@ class Log extends Component {
         session: false
       });
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch( (error)=> {
+       this.setState({ failM: true });
     });
     event.preventDefault();
   }
@@ -54,8 +55,13 @@ class Log extends Component {
           <Col md="9" xs="12" className="background_login"></Col>
             <Col md="3" xs="12" >
             <Container >
+            <Row>
+              <Col md="12"> <Alert  color="danger" isOpen={this.state.failM} toggle={this.onDismisfail}>
+                        Oops! Ha ocurrido un error revisa tu usuario y contraseña e intenta de nuevo!
+                  </Alert></Col>
+            </Row>
               <div className="Login">
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit.bind(this)}>
                   <FormGroup id="text">
                     <Label>Email</Label>
                     <Input
@@ -80,6 +86,7 @@ class Log extends Component {
                     >
                     Login
                   </Button>
+                  
                 </form>
               </div>
               </Container>

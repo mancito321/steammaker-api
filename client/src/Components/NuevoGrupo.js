@@ -16,6 +16,7 @@ class NuevoGrupo extends Component {
       name: "",
       usuario: "",
       password: "",
+      numero_participantes: 0,
       participante:"",
       participantes:[],
       franchises : [],
@@ -68,10 +69,9 @@ class NuevoGrupo extends Component {
     })
     .then(()=> {
       // always executed
-      console.log(this.state.successM)
-      console.log(this.state.failM)
     });
-  }
+  } 
+
   componentDidMount(){
 
     axios.get('http://localhost:5000/group/institution')
@@ -109,6 +109,7 @@ class NuevoGrupo extends Component {
     formData.append('password', this.state.password);
     formData.append('participantes', this.state.participantes);
     formData.append('imagen', this.state.fotog);
+    formData.append('numero_participantes', this.state.numero_participantes);
     formData.append('logo', this.state.logog);
     let session=JSON.parse(sessionStorage.getItem('mySteamM'))
     const config = {
@@ -378,8 +379,10 @@ class NuevoGrupo extends Component {
         this.state
       )
       this.setState({
-        participante: ""
+        participante: "",
+        numero_participantes: this.state.participantes.length
       })
+
       document.getElementById('participante').value = "";
     }
 

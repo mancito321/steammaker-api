@@ -43,12 +43,27 @@ router.get('/challenge/develops:id?',(req,res)=>{
   });
   //connection.end();
 });
+
 // Challenge
 router.get('/actual:id?',(req,res)=>{
   connection.query(`SELECT * FROM challenge WHERE id = ${req.query.id};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
+  });
+  //connection.end();
+});
+
+// Punctuatio
+router.post('/punctuation',(req,res)=>{
+  console.log(req.body.id)
+  connection.query(`UPDATE challenge_ok SET punctuation = ${req.body.punctuation} , edit = '${req.body.editar}',formato = '${req.body.formato}', bigart='${req.body.bigart}', fotografico='${req.body.fotografico}' ,video='${req.body.video}', equipo='${req.body.equipo}' WHERE id = ${req.body.id};`, function (error, results, fields) {
+    if (error) throw error;
+   connection.query(`UPDATE steammakers.group SET punctuation = ${req.body.punctuationT} WHERE id = ${req.body.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+    });  
   });
   //connection.end();
 });

@@ -142,7 +142,7 @@ class Grupo extends Component {
       try{
         if(this.state.edita == 1){
          return(
-        <Desarrollo id={this.state.id_challenge} handler={this.handler}/>
+        <Desarrollo id={this.state.id_challenge} punctuation={this.state.group[0].punctuation} handler={this.handler}/>
           )
         }else{
            return (  
