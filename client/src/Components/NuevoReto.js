@@ -9,7 +9,8 @@ import {
   Input,
   Label,
   FormText,
-  Form
+  Form,
+  CustomInput
 } from "reactstrap";
 import Nav from './Nav'
 import Footer from './Footer'
@@ -26,6 +27,8 @@ class NuevoReto extends Component {
     this.state = {
       NameReto:"",
       TextReto:"",
+      activo:false,
+      active:0,
       Reto:null,
       Rubrica:null,
       Formato:null,
@@ -36,6 +39,7 @@ class NuevoReto extends Component {
     };
   }
 
+
   validateForm() {
       if (this.state.NameReto.length > 0 && this.state.TextReto.length > 0 && this.state.Reto != null && this.state.Rubrica != null && this.state.Formato != null){
         return true
@@ -44,11 +48,22 @@ class NuevoReto extends Component {
 
   handleChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value     
     });
   }
-  componentDidMount() {
-
+  handleCheckbox(){
+    this.setState({      
+      activo:!this.state.activo
+    });
+     if(this.state.activo == true){
+       this.setState({      
+      active:1
+    });
+    }else{
+    this.setState({      
+      active:0
+    });
+    }
   }
 
   handleSubmit = event => {
@@ -59,6 +74,7 @@ class NuevoReto extends Component {
     formData.append('Reto', this.state.Reto);
     formData.append('Rubrica', this.state.Rubrica);
     formData.append('Formato', this.state.Formato);
+    formData.append('activo', this.state.activo);
     formData.append('recursos', this.state.recursos);
     let session=JSON.parse(sessionStorage.getItem('mySteamM'))
     const config = {
@@ -82,7 +98,9 @@ class NuevoReto extends Component {
       [e.target.name]:e.target.files[0]
     });
   }
-
+componentDidUpdate(){
+  console.log(this.state.activo)
+}
   render() {
     if (this.state.session) {
       return <Redirect to='/login'/>
@@ -222,6 +240,15 @@ class NuevoReto extends Component {
                                     }
                                   </div></Col>
                                 </Col>
+                              </Row>
+                            </Container>
+                             <Container className="form_margin">
+                              <Row>
+                                <Col xs="12">
+                                  <h5>ESTADO INICIAL DEL RETO</h5>
+                                  <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>                               
+                                </Col>
+                                <Col xs="12"> <CustomInput type="checkbox" onChange={this.handleCheckbox.bind(this)} id="exampleCustomCheckbox" label="Activar" /></Col>
                               </Row>
                             </Container>
 

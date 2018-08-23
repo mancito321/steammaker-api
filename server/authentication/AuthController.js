@@ -61,7 +61,7 @@ router.post('/newreto',upload.any(), (req, res)=> {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
     //Creamos los valores a colocar
     let today= new Date();
-    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','',1,'${req.body.TextReto}','${req.body.recursos}')`;
+    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','','${req.body.activo}','${req.body.TextReto}','${req.body.recursos}')`;
     //Insertamos en la db
     let thisId=0;
     connection.query(sql,function (err, reto) {
