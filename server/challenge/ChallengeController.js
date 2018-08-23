@@ -56,14 +56,14 @@ router.get('/actual:id?',(req,res)=>{
 
 // Punctuatio
 router.post('/punctuation',(req,res)=>{
-  console.log(req.body.id)
-  connection.query(`UPDATE challenge_ok SET punctuation = ${req.body.punctuation} , edit = '${req.body.editar}',formato = '${req.body.formato}', bigart='${req.body.bigart}', fotografico='${req.body.fotografico}' ,video='${req.body.video}', equipo='${req.body.equipo}' WHERE id = ${req.body.id};`, function (error, results, fields) {
+  console.log(req.body.punctuation)
+  connection.query(`UPDATE challenge_ok SET punctuation = ${req.body.punctuation} , edit = '${req.body.editar}',formato = '${req.body.formato}', bigart='${req.body.bigart}', fotografico='${req.body.fotografico}' ,video='${req.body.video}', equipo='${req.body.equipo}' WHERE id_group = ${req.body.group} and id_challenge=${req.body.id};`, function (error, results, fields) {
     if (error) throw error;
-   connection.query(`UPDATE steammakers.group SET punctuation = ${req.body.punctuationT} WHERE id = ${req.body.id};`, function (error, results, fields) {
+   connection.query(`UPDATE steammakers.group SET punctuation = ${req.body.punctuationT} WHERE id = ${req.body.group};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
-    });  
+    });
   });
   //connection.end();
 });

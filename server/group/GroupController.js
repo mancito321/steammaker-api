@@ -39,8 +39,17 @@ router.get('/detail:id?',(req,res)=>{
 
 
 // DESARROLLO
-router.get('/challenge:id?',(req,res)=>{
-  connection.query(`SELECT * FROM challenge_ok ok JOIN challenge ch on ok.id_challenge =ch.id WHERE ok.id_challenge = ${req.query.id};`, function (error, results, fields) {
+router.get('/challenge',(req,res)=>{
+  connection.query(`SELECT * FROM challenge_ok ok JOIN challenge ch on ok.id_challenge =ch.id WHERE ok.id_group = ${req.query.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
+router.get('/challengedeep',(req,res)=>{
+  connection.query(`SELECT * FROM challenge_ok ok JOIN challenge ch on ok.id_challenge =ch.id WHERE ok.id_challenge = ${req.query.id} and ok.id_group=${req.query.group};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -55,7 +64,7 @@ router.get('/participants:id?',(req,res)=>{
   connection.query(`SELECT * FROM participants WHERE id_group = ${req.query.id};`, function (error, results, fields) {
     if (error) throw error;
      if(results.length<1){
-      res.send('0') 
+      res.send('0')
     }else{
       res.send(results)
     }

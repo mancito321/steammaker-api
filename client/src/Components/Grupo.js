@@ -30,50 +30,50 @@ function desarrollo({ value, griddleKey, rowData }) {
 
 
 const NewLayout = ({ Table, Pagination, Filter, SettingsWrapper }) => (
-  <Row> 
-    <Col md="12" ><Table className="group_table" /></Col>    
+  <Row>
+    <Col md="12" ><Table className="group_table" /></Col>
   </Row>
 );
 class Grupo extends Component {
   constructor(props) {
     super(props);
-    this.handler = this.handler.bind(this) 
+    this.handler = this.handler.bind(this)
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
     this.state = {
-       modal: false,   
+       modal: false,
       session:sessionchk,
       id_challenge:"1",
       edita:"0",
       group: [],
       challenge: [],
-      participants:[]    
-    };  
- 
-  }  
+      participants:[]
+    };
+
+  }
   componentDidMount(){
     axios.get('http://localhost:5000/group/detail',{
       params:{
         id: this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        group: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed    
-     }); 
+    // always executed
+     });
 
      axios.get('http://localhost:5000/group/participants',{
       params:{
         id: this.props.id
       }
     })
-   .then((response)=>  {     
+   .then((response)=>  {
    if(response.data == 0){
      this.setState({
        participants:[{name:'No hay participantes'}]
@@ -82,36 +82,36 @@ class Grupo extends Component {
      this.setState({
        participants: response.data
       });
-   }   
-     
+   }
+
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed  
+    // always executed
 
-     }); 
+     });
      axios.get('http://localhost:5000/group/challenge',{
       params:{
         id: this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        challenge: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed    
+    // always executed
      });
   }
    toggle(){
     this.setState({
-      modal: !this.state.modal   
+      modal: !this.state.modal
     });
   };
   handleChange(event){
@@ -133,34 +133,34 @@ class Grupo extends Component {
     e.preventDefault()
     this.setState({
       edita: '0'
-    })  
+    })
   }
-  render() {       
+  render() {
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
       try{
         if(this.state.edita == 1){
          return(
-        <Desarrollo id={this.state.id_challenge} punctuation={this.state.group[0].punctuation} handler={this.handler}/>
+        <Desarrollo id={this.state.id_challenge} group={this.state.group[0].id} punctuation={this.state.group[0].punctuation} handler={this.handler}/>
           )
         }else{
-           return (  
-      <div> 
+           return (
+      <div>
       <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className='modal-dialog-centered modal-lg'>
           <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
           <ModalBody>
           <Challenge id={this.state.id_challenge}/>
-          </ModalBody> 
-          
-      </Modal>       
+          </ModalBody>
+
+      </Modal>
       <Container fluid="true">
        <Row>
        <Col md="2" className="nav_cont"><Nav/></Col>
        <Col md="2"></Col>
-       <Col md="10" xs="12" className="contenido_general">        
+       <Col md="10" xs="12" className="contenido_general">
        <Container className="Contenido_general">
-       <Row> 
+       <Row>
        <Col md="12">
        <h2 className="titulo">GRUPOS</h2><small>Detalle de grupo</small>
        </Col>
@@ -190,34 +190,34 @@ class Grupo extends Component {
          <Col md="12">
          <h4 className="subtitulo">RETOS DESARROLLADOS</h4>
           <p>
-             
-     <Griddle components={{Layout: NewLayout}} data={this.state.challenge} plugins={[plugins.LocalPlugin]}>      
-    <RowDefinition>     
-      <ColumnDefinition id="name" title="NOMBRE DEL RETO" />     
-      <ColumnDefinition id="ca" title="FECHA DE PUBLICACIÓN" />     
-      <ColumnDefinition id="fn" title="FECHA DE FINALIZACIÓN" />     
-      <ColumnDefinition id="punctuation" title="PUNTAJE GENERAL" />    
+
+     <Griddle components={{Layout: NewLayout}} data={this.state.challenge} plugins={[plugins.LocalPlugin]}>
+    <RowDefinition>
+      <ColumnDefinition id="name" title="NOMBRE DEL RETO" />
+      <ColumnDefinition id="ca" title="FECHA DE PUBLICACIÓN" />
+      <ColumnDefinition id="fn" title="FECHA DE FINALIZACIÓN" />
+      <ColumnDefinition id="punctuation" title="PUNTAJE GENERAL" />
       <ColumnDefinition id="reto" title="VER RETO" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleChange.bind(this)} name={rowData.id}>VER</Button>;})} />
       <ColumnDefinition id="desarrollo" title="DESARROLLO" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleClick.bind(this)} name={rowData.id} id="1">VER</Button>;})} />
     </RowDefinition>
   </Griddle>
-   
+
           </p>
          </Col>
           <Col md="12" className="margin_container"><a href="/grupos" ><Button>Regresar a ver los grupos</Button></a></Col>
-      </Row>     
-        
-      </Row>        
-           
+      </Row>
+
+      </Row>
+
       </Container>
       </Col>
       </Row>
       </Container>
-      
-       <footer><Footer/></footer></div>     
+
+       <footer><Footer/></footer></div>
       );
         }
-       
+
       }catch(error){
        return(
         <p></p>

@@ -4,9 +4,9 @@ import { Container, Row, Col,Button, FormGroup, Input , Label,Modal, ModalHeader
 import Nav from './Nav'
 import Footer from './Footer'
 import Cha from './ChallengeGroup'
-import { RadarChart,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Radar,Legend} from 'recharts'; 
+import { RadarChart,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Radar,Legend} from 'recharts';
 
-  const axios = require('axios'); 
+  const axios = require('axios');
 class Challenge extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +30,12 @@ class Challenge extends Component {
       valor2e:"",
       valor3e:"",
       valor4e:"",
-      valor5e:"",      
+      valor5e:"",
       punctuation:0,
       challenge : []
-    };   
-    this.toggle = this.toggle.bind(this);        
-  } 
+    };
+    this.toggle = this.toggle.bind(this);
+  }
   toggle() {
     this.setState({
       modals: !this.state.modals
@@ -47,37 +47,40 @@ class Challenge extends Component {
     return this.state.valor1e.length == 0 && this.state.valor2e.length == 0 && this.state.valor3e.length == 0 && this.state.valor4e.length == 0 && this.state.valor5e.length == 0 ;
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/group/challenge',{
+    axios.get('http://localhost:5000/group/challengedeep',{
       params:{
-        id:this.props.id
+        id:this.props.id,
+        group:this.props.group
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
+     console.log(response);
       this.setState({
-       challenge: response.data,       
+       challenge: response.data,
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
-     .then(()=> {        
+     .then(()=> {
         this.setState({
-       edit: this.state.challenge[0].edit,      
+       edit: this.state.challenge[0].edit,
+       punctuation:this.state.challenge[0].punctuation,
        valor1p:this.state.challenge[0].formato,
        valor2p:this.state.challenge[0].bigart,
        valor3p:this.state.challenge[0].fotografico,
        valor4p:this.state.challenge[0].video,
-       valor5p:this.state.challenge[0].equipo,      
-      }); 
-    // always executed     
-     }); 
+       valor5p:this.state.challenge[0].equipo,
+      });
+    // always executed
+     });
   }
    handleInputChanged(e){
     switch(e.target.id) {
     case 'valor1':
     if(e.target.value > 15){
     this.setState({
-      valor1e: 'El numero ingresado es mayor a 15',      
+      valor1e: 'El numero ingresado es mayor a 15',
     });
     }else{
        this.setState({
@@ -85,12 +88,12 @@ class Challenge extends Component {
                 valor1p: (Number(e.target.value)*100)/15,
                  valor1e: '',
             });
-    }       
+    }
         break;
     case 'valor2':
     if(e.target.value > 30){
      this.setState({
-      valor2e: 'El numero ingresado es mayor a 30',      
+      valor2e: 'El numero ingresado es mayor a 30',
     });
     }else{
        this.setState({
@@ -98,12 +101,12 @@ class Challenge extends Component {
                 valor2p: (Number(e.target.value)*100)/30,
                 valor2e: '',
             });
-    }       
+    }
         break;
     case 'valor3':
     if(e.target.value > 25){
      this.setState({
-      valor3e: 'El numero ingresado es mayor a 25',      
+      valor3e: 'El numero ingresado es mayor a 25',
     });
     }else{
       this.setState({
@@ -111,12 +114,12 @@ class Challenge extends Component {
                 valor3p: (Number(e.target.value)*100)/25,
                 valor3e: '',
             });
-    }        
+    }
         break;
     case 'valor4':
     if(e.target.value > 20){
      this.setState({
-      valor4e: 'El numero ingresado es mayor a 20',      
+      valor4e: 'El numero ingresado es mayor a 20',
     });
     }else{
       this.setState({
@@ -124,12 +127,12 @@ class Challenge extends Component {
                  valor4e: '',
                 valor4p: (Number(e.target.value)*100)/20
             });
-    }        
+    }
         break;
     case 'valor5':
     if(e.target.value > 10){
      this.setState({
-      valor5e: 'El numero ingresado es mayor a 10',      
+      valor5e: 'El numero ingresado es mayor a 10',
     });
     }else{
       this.setState({
@@ -137,33 +140,36 @@ class Challenge extends Component {
                  valor5e: '',
                 valor5p: (Number(e.target.value)*100)/10
             });
-    }        
+    }
         break;
     default:
         this.setState({
                 punctuation: 0
             });
-         } 
+         }
  }
  handleInputClick(){
+   let suma=this.state.valor1+this.state.valor2+this.state.valor3+this.state.valor4+this.state.valor5
    this.setState({
-    punctuation: (this.state.valor1+this.state.valor2+this.state.valor3+this.state.valor4+this.state.valor5),
+    punctuation: suma,
     modal: !this.state.modal
   })
+  console.log(this.state.punctuation+' '+suma);
  }
 
 handleButtonChange(event){
 
-  axios.post('http://localhost:5000/challenge/punctuation',{    
+  axios.post('http://localhost:5000/challenge/punctuation',{
         id:this.props.id,
         punctuation:this.state.punctuation,
-        punctuationT:this.state.punctuation+this.props.punctuation,     
-        editar:'none',     
-        formato: this.state.valor1p,     
-        bigart: this.state.valor2p,     
-        fotografico: this.state.valor3p,     
-        video: this.state.valor4p,     
-        equipo: this.state.valor5p,     
+        punctuationT:this.state.punctuation+this.props.punctuation,
+        editar:'none',
+        group:this.props.group,
+        formato: this.state.valor1p,
+        bigart: this.state.valor2p,
+        fotografico: this.state.valor3p,
+        video: this.state.valor4p,
+        equipo: this.state.valor5p,
     })
    .then((response)=>  {
       this.setState({
@@ -171,47 +177,47 @@ handleButtonChange(event){
             });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
-     .then(()=> {     
-    // always executed  
-   
-     }); 
+     .then(()=> {
+    // always executed
+
+     });
       this.setState({
     modal: !this.state.modal
   })
 }
 
-  render() {       
+  render() {
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
       try{
-        return (  
-    <div>            
+        return (
+    <div>
       <Container fluid="true">
        <Row>
        <Col md="2" className="nav_cont"><Nav/></Col>
        <Col md="2"></Col>
-       <Col md="10" xs="12" className="contenido_general">        
+       <Col md="10" xs="12" className="contenido_general">
        <Container className="Contenido_general">
-       <Row> 
+       <Row>
        <Col md="12">
        <h2 className="titulo">GRUPOS</h2><small>Detalle de grupo - Solucion de reto</small>
 
        </Col>
        <Row  className="margin_container">
-       <Col md="12"><h4 className="subtitulo">INFORMACIÓN DEL DESARROLLO</h4></Col>       
+       <Col md="12"><h4 className="subtitulo">INFORMACIÓN DEL DESARROLLO</h4></Col>
         <Col md="6">
-        <h5>Fecha de publicación</h5> 
-        <p>{this.state.challenge[0].ca}</p>       
+        <h5>Fecha de publicación</h5>
+        <p>{this.state.challenge[0].ca}</p>
         </Col>
         <Col md="6">
         <h5>{this.state.challenge[0].name}</h5>
-        <Button onClick={this.toggle}>Ver reto</Button>  
+        <Button onClick={this.toggle}>Ver reto</Button>
         </Col>
         </Row>
-     
+
         <Row className="margin_container form_margin ">
         <Col md="4">
         <h5>Recursos adicionales</h5>
@@ -231,34 +237,34 @@ handleButtonChange(event){
           <Col md="8">Formato<p className="red">{this.state.valor1e}</p></Col>
           <Col md="4">
            <p><Input id="valor1" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
-            
+
           </Col>
           <Col md="8">Big Art <p className="red">{this.state.valor2e}</p></Col>
            <Col md="4">
            <p><Input id="valor2" placeholder="0"  type="number" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
-          
+
           </Col>
           <Col md="8">Registro fotográfico  <p className="red">{this.state.valor3e}</p></Col>
            <Col md="4">
            <p><Input id="valor3" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
-         
+
           </Col>
           <Col md="8">Video<p className="red">{this.state.valor4e}</p></Col>
            <Col md="4">
            <p><Input id="valor4" type="number"  placeholder="0" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
-           
+
           </Col>
           <Col md="8">Evidencia del trabajo en equipo<p className="red">{this.state.valor5e}</p></Col>
            <Col md="4">
            <p><Input  placeholder="0" id="valor5" type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
-           
+
           </Col>
         </Row>
-          
+
         </Col>
         <Col md="4">
         <h5 className="center">Puntaje general</h5>
-        <h1 className="center">{this.state.challenge[0].punctuation}</h1>
+        <h1 className="center">{this.state.punctuation}</h1>
         </Col>
         <Col md="4">
          <h5 className="center">Puntaje por area</h5>
@@ -278,12 +284,12 @@ handleButtonChange(event){
 </RadarChart>
       </Col>
         <Col md="12" className={this.state.edit+' center'}><Button disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
-       
+
       </Row>
-        <Col md="12" className="margin_container form_margin "></Col>  
-        
-      </Row>        
-           
+        <Col md="12" className="margin_container form_margin "></Col>
+
+      </Row>
+
       </Container>
       </Col>
       </Row>
@@ -301,11 +307,11 @@ handleButtonChange(event){
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
           <Cha id={this.state.challenge[0].id_challenge}/>
-          </ModalBody>           
-        </Modal>  
+          </ModalBody>
+        </Modal>
       </Container>
-       <footer><Footer/></footer></div> 
-      
+       <footer><Footer/></footer></div>
+
       );
       }catch(error){
        return(
