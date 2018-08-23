@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router'
-import { Container, Row, Col,Button, FormGroup, Input , Label } from "reactstrap";
+import { Container, Row, Col,Button, FormGroup, Input , Label, CustomInput,Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import Nav from './Nav'
 import Footer from './Footer'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import NuevoDesarrollo from './NuevoDesarrollo'
+import Reto from './Reto'
 import Griddle, { plugins, RowDefinition, ColumnDefinition,Components} from 'griddle-react';
 var LocalPlugin = require('griddle-react').plugins.LocalPlugin;
 const axios = require('axios');
@@ -33,6 +33,9 @@ const NewLayout = ({ Table, Pagination, Filter, SettingsWrapper }) => (
   </Row>
 );
 
+
+
+
 class Retos extends Component {
   constructor(props) {
     super(props);
@@ -40,13 +43,17 @@ class Retos extends Component {
     this.state = {
       session:sessionchk,
       retos : [],
+      modal: false,
+      edit : [],   
+      active : false,
+      activeA : true,
       detail:"0",
       nombreR:'',
       contenidoR:"",
       fechaR:''
     };
   }
-  componentDidMount(){
+    componentDidMount(){
     axios.get('http://localhost:5000/challenge/challenges')
    .then((response)=>  {
       this.setState({
@@ -58,22 +65,70 @@ class Retos extends Component {
     // handle error
      })
      .then(()=> {
-
+      console.log(this.state.retos)
     // always executed
      });
   }
+  updateActive(){
+    axios.post('http://localhost:5000/challenge/active/edit',{
+      id:this.state.edit,
+      active:this.state.active
+    })
+   .then((response)=>  {   
+      
+    })
+    .catch((error)=>  {
+    // handle error
+     })
+     .then(()=> {
+      console.log(this.state.retos)
+    // always executed
+     });
+       window.location.assign("/retos")
+  }
 
+    updateActiveA(){
+    axios.post('http://localhost:5000/challenge/active/edit',{
+      id:this.state.edit,
+      active:this.state.activeA
+    })
+   .then((response)=>  {   
+      
+    })
+    .catch((error)=>  {
+    // handle error
+     })
+     .then(()=> {
+         // always executed
+     });
+       window.location.assign("/retos")
+  }
+ componentDidUpdate(){
+  console.log(this.state.active)
+ }
 
   handleChange (event){
-    let params=event.target.name.split(',')
+   
     this.setState({
-      detail: params[0],
-      contenidoR:params[1],
-      nombreR:params[2],
-      fechaR:params[3]
+      detail: event.target.name,     
     });
 
   }
+   toggle(event){
+    this.setState({
+      modal: !this.state.modal,
+       edit: event.target.name,
+        active:!this.state.active,
+    }); 
+  };
+    toggle1(event){
+    this.setState({
+      modal: !this.state.modal,
+      edit: event.target.name,
+      activeA:!this.state.activeA,
+    }); 
+  };
+
   render() {
     if (this.state.session) {
       return <Redirect to='/login' />
@@ -82,13 +137,33 @@ class Retos extends Component {
       try{
       if(this.state.detail>0){
         return(
-          <NuevoDesarrollo id={this.state.detail} name={this.state.nombreR} cont={this.state.contenidoR} date={this.state.fechaR}/>
+          <Reto id={this.state.detail}/>
           )
 
       }else{
           return (
      <div>
       <Container fluid="true">
+      <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className='modal-dialog-centered modal-lg'>
+          <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
+          <ModalBody>
+           <p>Esta seguro de hacer esta accion con el reto con id numero: <b>{this.state.edit}</b></p>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.updateActive.bind(this)}>Aceptar</Button>{' '}
+            <Button color="secondary" onClick={this.toggle.bind(this)}>Cancelar</Button>
+          </ModalFooter>
+      </Modal>
+       <Modal isOpen={this.state.modal} toggle={this.toggle1.bind(this)} className='modal-dialog-centered modal-lg'>
+          <ModalHeader toggle={this.toggle1.bind(this)}></ModalHeader>
+          <ModalBody>
+           <p>Esta seguro de hacer esta accion con el reto con id numero: <b>{this.state.edit}</b></p>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.updateActiveA.bind(this)}>Aceptar</Button>{' '}
+            <Button color="secondary" onClick={this.toggle1.bind(this)}>Cancelar</Button>
+          </ModalFooter>
+      </Modal>
        <Row>
        <Col md="2" className="nav_cont"><Nav/></Col>
        <Col md="2"></Col>
@@ -96,7 +171,7 @@ class Retos extends Component {
        <Container className="Contenido_general">
        <Row>
        <Col md="12">
-       <h2 className="titulo">GRUPOS</h2><small>Todos los grupos</small>
+       <h2 className="titulo">RETOS</h2><small>Todos los retos</small>
        </Col>
        <Row  className="margin_container">
    <Col md="12">
@@ -104,12 +179,14 @@ class Retos extends Component {
     <RowDefinition>
       <ColumnDefinition id="logo" title="Logo" customComponent={enhancedWithRowData(id)} />
       <ColumnDefinition id="name" title="Nombre" />
-      <ColumnDefinition id="iname" title="Institución Educativa" />
-      <ColumnDefinition id="frname" title="Sede" />
-      <ColumnDefinition id="user" title="Master Teacher" />
-      <ColumnDefinition id="participantes" title="Participantes" />
-      <ColumnDefinition id="ver" title="Ver grupo" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
-         return <Button name={[rowData.id,rowData.contenido,rowData.name,rowData.ca]} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
+      <ColumnDefinition id="ca" title="Inicio" />
+      <ColumnDefinition id="fn" title="Finalizado" />
+      <ColumnDefinition id="desarrollos" title="Desarrollado" />
+      <ColumnDefinition id="verRe" title="Ver grupo" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+         return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
+          })} />
+       <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+         return <div>{rowData.active == 0 ? (<input type="checkbox" name={rowData.id} onClick={this.toggle.bind(this)} />) : (<input type="checkbox"  checked  name={rowData.id} onClick={this.toggle1.bind(this)}/>) }</div>;
           })} />
     </RowDefinition>
   </Griddle>

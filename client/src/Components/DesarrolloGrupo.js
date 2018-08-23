@@ -216,7 +216,9 @@ handleButtonChange(event){
         <h5>{this.state.challenge[0].name}</h5>
         <Button onClick={this.toggle}>Ver reto</Button>
         </Col>
-        </Row>
+        <Col md="12">  <h5>Ver desarrollo</h5>
+        <Button onClick={this.toggle}>Ver reto</Button></Col>
+        </Row>        
 
         <Row className="margin_container form_margin ">
         <Col md="4">

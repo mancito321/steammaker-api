@@ -45,16 +45,16 @@ class Header extends React.Component {
                   Retos
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <Link to="/nuevo_reto">
-                  <DropdownItem>
+                 <NavLink href="/nuevo_reto" name="0" onClick={this.handleChange.bind(this)}>
+                <DropdownItem>
                     Nuevo reto
-                  </DropdownItem>
-                  </Link>
-                  <Link to="/retos">
-                  <DropdownItem>
+                </DropdownItem>
+                </NavLink>
+                 <NavLink href="/retos" name="0" onClick={this.handleChange.bind(this)}>
+                <DropdownItem>
                     Ver retos
-                  </DropdownItem>
-                </Link>
+                </DropdownItem>
+                </NavLink>
                 </DropdownMenu>
               </UncontrolledDropdown>
                <UncontrolledDropdown nav inNavbar>

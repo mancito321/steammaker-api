@@ -17,7 +17,7 @@ router.get('/challenge/all',(req,res)=>{
   //connection.end();
 });
 router.get('/challenge/last',(req,res)=>{
-  connection.query(`SELECT * FROM challenge ORDER BY ca DESC LIMIT 1`, function (error, results, fields) {
+  connection.query(`SELECT * FROM challenge WHERE active = 1 ORDER BY ca DESC LIMIT 1`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -67,6 +67,15 @@ router.post('/punctuation',(req,res)=>{
   });
   //connection.end();
 });
+
+router.post('/active/edit',(req,res)=>{
+  connection.query(`UPDATE challenge SET active = ${req.body.active} WHERE id = ${req.body.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
 router.get('/user/:id',(req,res)=>{
   connection.query(`SELECT * FROM users WHERE id= ${req.params.id};`, function (error, results, fields) {
     if (error) throw error;
@@ -75,8 +84,22 @@ router.get('/user/:id',(req,res)=>{
   });
   //connection.end();
 });
+
+//desarrollos
+
+router.get('/desarrollo',(req,res)=>{
+  console.log(req.params)
+  connection.query(`SELECT ok.id, gr.name as 'gname',u.user as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where ch.id = ${req.query.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
+
 router.get('/challenges',(req,res)=>{
-  connection.query(`SELECT * FROM challenge`, function (error, results, fields) {
+  connection.query(`SELECT c.*,(SELECT COUNT(*) FROM challenge_ok where id_challenge = c.id) as 'desarrollos' FROM challenge c`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
