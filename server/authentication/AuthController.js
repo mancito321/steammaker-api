@@ -135,25 +135,45 @@ router.post('/newgroup',upload.any(), (req, res)=> {
 
 
 });
+// New Solution
+router.post('/solucionreto',upload.any(), function(req, res) {
+  //Verify token
+  var token = req.headers['x-access-token'];
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+  jwt.verify(token, config.secret, (err, decoded) =>{
+    if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
+    // date is creates
+    let today= new Date();
+    // sql sentence is crated
+    let sql = `INSERT INTO challenge_ok(id_group,id_challenge,ca,recurso) VALUES(${decoded.group},${req.body.Retoid},'${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','${req.body.Contenidos}')`
+    // Conection in db
+    connection.query(sql, (err, challenge)=> {
+      if (err) return res.status(500).send("There was a problem registering the solution.")
+      // Upload files
+      let formData = req.files;
+      formData.forEach((file)=>{
+        cdnUse.upFiles('steammakers/reto/desarrollo/'+req.body.Retoid+'/'+decoded.group,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
+      })
+      res.status(200).send("Solución subida");
+    });
+  });
+});
+
+
 
 
 
 // My info token
 router.get('/me', function(req, res) {
+  console.log(req.headers);
   var token = req.headers['x-access-token'];
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
 
   jwt.verify(token, config.secret, function(err, decoded) {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
-
+    // send token stats
     res.status(200).send(decoded);
-    // User.findById(decoded.id,
-    //   { password: 0 }, // projection
-    //   function (err, user) {
-    //     if (err) return res.status(500).send("There was a problem finding the user.");
-    //     if (!user) return res.status(404).send("No user found.");
-    //     res.status(200).send(user);
-    //   });
   });
 });
 
@@ -165,10 +185,11 @@ router.post('/login', function(req, res) {
     if (results == '') return res.status(404).send('No user found.');
     // compare password
     console.log(req.body.password);
-    console.log(results[0].password);
+    console.log(results[0].id_group);
+    console.log(results[0].id);
     var passwordIsValid = bcrypt.compareSync(req.body.password,results[0].password);
     if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
-    var token = jwt.sign({ id: results[0]._id }, config.secret, {
+    var token = jwt.sign({ id: results[0].id,group:results[0].id_group }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
     res.status(200).send({ auth: true, token: token });

@@ -60,6 +60,14 @@ router.get('/user/:id',(req,res)=>{
   });
   //connection.end();
 });
+router.get('/challenges',(req,res)=>{
+  connection.query(`SELECT * FROM challenge`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
 
 
 module.exports = router;

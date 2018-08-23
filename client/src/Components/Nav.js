@@ -50,7 +50,7 @@ class Header extends React.Component {
                     Nuevo reto
                   </DropdownItem>
                   </Link>
-                  <Link to="/reto">
+                  <Link to="/retos">
                   <DropdownItem>
                     Ver retos
                   </DropdownItem>
