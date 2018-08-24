@@ -5,7 +5,6 @@ import Nav from './Nav'
 import Footer from './Footer'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { ChallengeCon } from './ChallengeContext';
 import Reto from './Reto'
 import Griddle, { plugins, RowDefinition, ColumnDefinition,Components} from 'griddle-react';
 var LocalPlugin = require('griddle-react').plugins.LocalPlugin;
@@ -145,7 +144,8 @@ class Retos extends Component {
       try{
       if(this.state.detail>=1){
         return(
-          <Reto id={this.state.detail} handler={this.handler.bind(this)}/>
+
+<Reto id={this.state.detail}  handler={this.handler.bind(this)}/>
           )
 
       }else{
@@ -193,14 +193,17 @@ class Retos extends Component {
       <ColumnDefinition id="verRe" title="Ver reto" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
          return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
           })} />
-       <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
-         return <div>{rowData.active == 0 ? (<input type="checkbox" name={rowData.id} onClick={this.toggle.bind(this)} />) : (<input type="checkbox"  checked  name={rowData.id} onClick={this.toggle1.bind(this)}/>) }</div>;
-          })} />
+          <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+           return <div>{rowData.active == 0 ? (<input type="checkbox" name={rowData.id} onClick={this.toggle.bind(this)} />) : (<input type="checkbox"  checked  name={rowData.id} onClick={this.toggle1.bind(this)}/>) }</div>;
+            })} />
+
+
     </RowDefinition>
   </Griddle>
+
    </Col>
-   <Col md="12" className="center margin_container"><Link to="/nuevo_grupo" ><Button>Crear un grupo</Button></Link></Col>
-  
+   <Col md="12" className="center margin_container"><Link to="/nuevo_reto" ><Button>Crear un reto</Button></Link></Col>
+
       </Row>
 
       </Row>

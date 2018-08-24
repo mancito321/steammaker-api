@@ -4,6 +4,7 @@ import { Container, Row, Col,Button, FormGroup, Input , Label,Modal, ModalHeader
 import Nav from './Nav'
 import Footer from './Footer'
 import Cha from './ChallengeGroup'
+import { ChallengeCon } from './ChallengeContext';
 import { RadarChart,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Radar,Legend} from 'recharts';
 
   const axios = require('axios');
@@ -218,7 +219,7 @@ handleButtonChange(event){
         </Col>
         <Col md="12">  <h5>Ver desarrollo</h5>
         <Button onClick={this.toggle}>Ver reto</Button></Col>
-        </Row>        
+        </Row>
 
         <Row className="margin_container form_margin ">
         <Col md="4">
@@ -233,37 +234,51 @@ handleButtonChange(event){
         </Row>
         <Row className="margin_container form_margin ">
 
-        <Col md="4" className={this.state.edit}>
-        <h5>Puntuar reto</h5>
-        <Row>
-          <Col md="8">Formato<p className="red">{this.state.valor1e}</p></Col>
-          <Col md="4">
-           <p><Input id="valor1" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
 
-          </Col>
-          <Col md="8">Big Art <p className="red">{this.state.valor2e}</p></Col>
-           <Col md="4">
-           <p><Input id="valor2" placeholder="0"  type="number" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
+        <ChallengeCon>
+          {context => {
+            console.log('Context :');
+            console.log(context);
+           if (context.state==1) {
+             return(
+               <Col md="4" className={this.state.edit}>
+               <h5>Puntuar reto</h5>
+               <Row>
+                 <Col md="8">Formato<p className="red">{this.state.valor1e}</p></Col>
+                 <Col md="4">
+                  <p><Input id="valor1" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
 
-          </Col>
-          <Col md="8">Registro fotográfico  <p className="red">{this.state.valor3e}</p></Col>
-           <Col md="4">
-           <p><Input id="valor3" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
+                 </Col>
+                 <Col md="8">Big Art <p className="red">{this.state.valor2e}</p></Col>
+                  <Col md="4">
+                  <p><Input id="valor2" placeholder="0"  type="number" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
 
-          </Col>
-          <Col md="8">Video<p className="red">{this.state.valor4e}</p></Col>
-           <Col md="4">
-           <p><Input id="valor4" type="number"  placeholder="0" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
+                 </Col>
+                 <Col md="8">Registro fotográfico  <p className="red">{this.state.valor3e}</p></Col>
+                  <Col md="4">
+                  <p><Input id="valor3" placeholder="0"  type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
 
-          </Col>
-          <Col md="8">Evidencia del trabajo en equipo<p className="red">{this.state.valor5e}</p></Col>
-           <Col md="4">
-           <p><Input  placeholder="0" id="valor5" type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
+                 </Col>
+                 <Col md="8">Video<p className="red">{this.state.valor4e}</p></Col>
+                  <Col md="4">
+                  <p><Input id="valor4" type="number"  placeholder="0" className="text_group"  onChange={this.handleInputChanged.bind(this)}/></p>
 
-          </Col>
-        </Row>
+                 </Col>
+                 <Col md="8">Evidencia del trabajo en equipo<p className="red">{this.state.valor5e}</p></Col>
+                  <Col md="4">
+                  <p><Input  placeholder="0" id="valor5" type="number" className="text_group" onChange={this.handleInputChanged.bind(this)} /></p>
 
-        </Col>
+                 </Col>
+                 <Col xs="12">
+                   <Button  disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button>
+                 </Col>
+               </Row>
+
+               </Col>
+             )
+           }
+         }}
+        </ChallengeCon>
         <Col md="4">
         <h5 className="center">Puntaje general</h5>
         <h1 className="center">{this.state.punctuation}</h1>
@@ -285,7 +300,7 @@ handleButtonChange(event){
   <Legend />
 </RadarChart>
       </Col>
-        <Col md="12" className="center"><Button className={this.state.edit} disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
+        <Col md="12" className="center"> <Button onClick={this.props.handler}>Regresar</Button></Col>
 
       </Row>
         <Col md="12" className="margin_container form_margin "></Col>

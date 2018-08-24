@@ -36,7 +36,8 @@ class NuevoDesarrollo extends Component {
       successM:false,
       failM:false,
       recurso:false,
-      recursos:[]
+      recursos:[],
+      challenge:[]
     };
     this.onDismissu = this.onDismissu.bind(this);
     this.onDismisfail = this.onDismisfail.bind(this);
@@ -45,7 +46,7 @@ componentWillMount(){
   console.log('will mount');
   axios.get('http://localhost:5000/api/auth/resources',{
     params: {
-    id: this.state.Retoid  }
+    id: this.state.id  }
   })
   .then( (response) =>{
     // handle success
@@ -64,6 +65,22 @@ componentWillMount(){
     // always executed
     console.log('challenge_ok');
   });
+  axios.get('http://localhost:5000/challenge/actual',{
+    params:{
+      id:this.props.id
+    }
+  })
+ .then((response)=>  {
+    this.setState({
+     challenge: response.data[0]
+    });
+  })
+  .catch((error)=>  {
+  // handle error
+   })
+   .then(()=> {
+   console.log(this.state.challenge);
+   });
 }
   validateForm() {
       if (this.state.RetoS!=null) {
@@ -187,13 +204,13 @@ componentWillMount(){
                           <Row>
                             <Col md="6" xs="12">
                               <h4>
-                                {this.props.name}
+                                {this.state.challenge.name}
                               </h4>
                               <p>
-                                {this.props.cont}
+                                {this.state.challenge.contenido}
                               </p>
                               <h4>Fecha</h4>
-                              <p>{this.props.date}</p>
+                              <p>{this.state.challenge.ca}</p>
                             </Col>
                             <Col md="6" xs="12">
                               <h4>
@@ -204,7 +221,7 @@ componentWillMount(){
                               </p>
                               <button onClick={this.toggleRecursos}>ver recursos</button>
                               {
-                                recursos
+                                (this.state.recurso) ? <p>{this.state.challenge.recursos}</p>:<p></p>
                               }
                             </Col>
                           </Row>

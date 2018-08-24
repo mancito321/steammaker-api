@@ -50,8 +50,6 @@ class Header extends React.Component {
 
                 <ChallengeCon>
                   {context => {
-                    console.log('Context :');
-                    console.log(context);
                    if (context.state==1) {
                      return(
                        <NavLink href="/nuevo_reto" name="0" onClick={this.handleChange.bind(this)}>
@@ -77,8 +75,6 @@ class Header extends React.Component {
                 <DropdownMenu right>
                 <ChallengeCon>
                   {context => {
-                    console.log('Context :');
-                    console.log(context);
                    if (context.state==1) {
                      return(
                        <NavLink href="/nuevo_grupo">

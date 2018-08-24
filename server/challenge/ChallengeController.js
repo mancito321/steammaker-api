@@ -24,6 +24,14 @@ router.get('/challenge/last',(req,res)=>{
   });
   //connection.end();
 });
+router.get('/boton',(req,res)=>{
+  connection.query(`SELECT count(*) as 'boton' FROM challenge_ok where id_group = ${req.query.id_grupo} and id_challenge = ${req.query.id_challenge};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
 
 // DOCUMENTATION
 router.get('/challenge/documentation:id?',(req,res)=>{

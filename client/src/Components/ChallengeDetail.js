@@ -13,49 +13,74 @@ class Challenge extends Component {
     this.state = {
       session:sessionchk,
       challenge : []
-    };           
-  } 
+    };
+  }
   componentDidMount(){
     axios.get('http://localhost:5000/challenge/actual',{
       params:{
         id:this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        challenge: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
-     .then(()=> {     
-    // always executed    
-     }); 
+     .then(()=> {
+    // always executed
+     });
+
+     axios.get('http://localhost:5000/challenge/boton',{
+       params:{
+         id_grupo: this.props.grupo,
+         id_challenge: this.props.id
+       }
+     })
+    .then((response)=>  {
+       this.setState({
+        boton: response.data[0].boton
+       });
+     })
+     .catch((error)=>  {
+     // handle error
+      })
+      .then(()=> {
+
+     // always executed
+      });
   }
 
-  render() {       
+  render() {
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
       try{
-        return (  
-      <Row  className="margin_container">      
-         <Col md="7" xs="12">
+        return (
+      <Row  className="margin_container">
+         <Col md="6" xs="12">
          <h5>{this.state.challenge[0].name}</h5>
          <p>{this.state.challenge[0].contenido}</p>
-          <h5>Fecha de publicación</h5>        
-         
-        <p>{this.state.challenge[0].ca}</p>       
-             <h5>Finalizado</h5>        
-        
-          <p>{this.state.challenge[0].fn}</p>         
+          <h5>Fecha de publicación</h5>
+
+        <p>{this.state.challenge[0].ca}</p>
+             <h5>Finalizado</h5>
+
+          <p>{this.state.challenge[0].fn}</p>
         </Col>
-            <Col md="4" xs="12">
-            <h5>Documentos</h5>
-            <Documents key="document" id={this.state.challenge[0].id}/>
-        </Col>           
-      </Row>     
+
+        <Col md="4" xs="12">
+          <h5>Documentos</h5>
+          <Documents key="document" id={this.state.challenge[0].id}/>
+      </Col>
+      <Col md="2" xs="6">
+      <Button >Desarrollo</Button>
+      <Button>Actividad</Button>
+    </Col>
+
+      </Row>
       );
       }catch(error){
        return(

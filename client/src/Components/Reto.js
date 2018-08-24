@@ -10,8 +10,10 @@ import Documents from './Documents'
 import Develops from './Develops'
 import Challenge from './ChallengeGroup'
 import Desarrollo from './DesarrolloGrupo'
+import NuevoDesarrollo from './NuevoDesarrollo'
 import Grupos from './Grupo'
 import Cha from './ChallengeDetail'
+import { ChallengeCon } from './ChallengeContext';
 const axios = require('axios');
 const rowDataSelector = (state, { griddleKey }) => {
   return state
@@ -44,13 +46,15 @@ class Reto extends Component {
     this.state = {
        modal: false,
       session:sessionchk,
-      id_challenge:"",     
-      id_group:"",     
-      punctuation:"",     
+      id_challenge:"",
+      id_group:"",
+      boton:null,
+      punctuation:"",
       edita:"0",
       group: [],
       develop: [],
-      participants:[]
+      participants:[],
+      development:false
     };
 
   }
@@ -71,6 +75,8 @@ class Reto extends Component {
      .then(()=> {
     // always executed
      });
+
+
 
      axios.get('http://localhost:5000/group/participants',{
       params:{
@@ -111,7 +117,7 @@ class Reto extends Component {
     // handle error
      })
      .then(()=> {
-      
+
     // always executed
      });
   }
@@ -131,7 +137,7 @@ class Reto extends Component {
       edita: event.target.id,
       id_challenge: event.target.name,
     });
-  } 
+  }
   handler(e) {
     e.preventDefault()
     this.setState({
@@ -139,20 +145,31 @@ class Reto extends Component {
     })
   }
   handleButton (event){
-  
     let variable = event.target.name.split(',')
+
+
       console.log(variable[1])
     this.setState({
       edita: event.target.id,
       id_challenge: variable[1],
       id_group: variable[0],
       punctuation: variable[2],
-    });    
+    });
+  }
+  handleDeve  = ()=>{
+    this.setState({
+      development:true
+    })
   }
   render() {
     if (this.state.session) {
       return <Redirect to='/login' />
-    }else {
+    }else if(this.state.development){
+      return (
+        <NuevoDesarrollo id={this.props.id} />
+      )
+    }
+    else{
       try{
         if(this.state.edita == 1){
          return(
@@ -160,7 +177,7 @@ class Reto extends Component {
           )
         }else if(this.state.edita == 2){
           return(
-      <Desarrollo id={this.state.id_challenge} group={this.state.id_group} punctuation={this.state.punctuation} handler={this.handler}/>
+      <Desarrollo id={this.state.id_challenge}  group={this.state.id_group} punctuation={this.state.punctuation} handler={this.handler}/>
           )
         }else{
 
@@ -169,7 +186,9 @@ class Reto extends Component {
       <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className='modal-dialog-centered modal-lg'>
           <ModalHeader toggle={this.toggle.bind(this)}></ModalHeader>
           <ModalBody>
-          <Challenge id={this.state.id_challenge}/>
+            <Challenge id={this.state.id_challenge} />
+
+
           </ModalBody>
 
       </Modal>
@@ -183,11 +202,23 @@ class Reto extends Component {
        <Col md="12">
        <h2 className="titulo">RETOS</h2><small>Detalle del reto</small>
        </Col>
-       <Row  className="margin_container">        
+       <Row  className="margin_container">
          <Col md="12">
          <Row>
-          <Cha id={this.props.id} />
+
+           <ChallengeCon>
+             {context => {
+                return(
+                      <Cha id={this.props.id} grupo={context.grupo}/>
+                )
+
+            }}
+           </ChallengeCon>
+
           </Row>
+         </Col>
+         <Col xs="12">
+           <Button onClick={this.handleDeve} >Desarrollo</Button>
          </Col>
          <Col md="12">
          <h4 className="subtitulo">Desarrollos presentados</h4>

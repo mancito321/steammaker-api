@@ -17,13 +17,47 @@ const axios = require('axios');
 
 class App extends Component {
   state = {
-    permission:0
+    permission:0,
+    grupo:0
+  }
+  componentDidMount(){
+  console.log('did mount');
+
+  }
+  componentWillMount(){
+    let session=JSON.parse(sessionStorage.getItem('mySteamM'))
+    axios.get('http://localhost:5000/api/auth/me',{
+      headers: {
+          'content-type': 'multipart/form-data',
+          'x-access-token':session.token
+      }
+  })
+   .then((response)=>  {
+      this.setState({
+        permission:response.data.rol,
+        grupo:response.data.group
+      })
+    })
+    .catch((error)=>  {
+    // handle error
+    console.log('Fuck '+error);
+     })
+     .then(()=> {
+    console.log(this.state.permission);
+     });
+  }
+  componentDidUpdate(){
+
+  }
+  componentWillUpdate(){
+    console.log('will update');
   }
 
   render() {
     return (
       <ChallengePro value={{
           state:this.state.permission,
+          grupo:this.state.grupo,
           actions:{
             update:()=>{if (this.state.permission==0) {
 
@@ -36,7 +70,8 @@ class App extends Component {
                  })
                   .then((response)=>  {
                      this.setState({
-                       permission:response.data.rol
+                       permission:response.data.rol,
+                       grupo:response.data.group
                      })
                    })
                    .catch((error)=>  {
@@ -48,6 +83,7 @@ class App extends Component {
                     });
             }},
             logOut:()=>{
+              console.log('Fuccccckkk');
               this.setState({
                 permission:0
               })
