@@ -280,12 +280,12 @@ handleButtonChange(event){
   <PolarGrid />
   <PolarAngleAxis dataKey="subject" />
   <PolarRadiusAxis angle={30} domain={[0, 100]}/>
-  <Radar name="" dataKey="A" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+  <Radar name="SteamMaker" dataKey="A" stroke="#6c757d" fill="#6c757d" fillOpacity={0.6} />
 
   <Legend />
 </RadarChart>
       </Col>
-        <Col md="12" className={this.state.edit+' center'}><Button disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
+        <Col md="12" className="center"><Button className={this.state.edit} disabled={!this.validateForm()} onClick={this.handleInputClick.bind(this)}>Puntuar</Button> <Button onClick={this.props.handler}>Regresar</Button></Col>
 
       </Row>
         <Col md="12" className="margin_container form_margin "></Col>

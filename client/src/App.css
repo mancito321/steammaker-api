@@ -24,6 +24,10 @@ z-index: 1;
     font-weight: 600;
     color: #FFC107;
 }
+.recharts-wrapper,
+.recharts-surface{
+  width: 100% !important;
+}
 .App-title {
   font-size: 1.5em;
 }
@@ -141,6 +145,7 @@ h5{}
 /*NAV*/
 .nav_cont{
     height: 100vh;
+    width: 100vh;
   border-right:1px solid;
   position: fixed;
       background: #f8f9fa;
@@ -172,6 +177,9 @@ h5{}
     color: rgba(0,0,0,.7);
     text-decoration: none;
 }
+.recharts-default-legend{
+  display: none
+}
 /*END NAV*/
 
 /*Footer*/
@@ -191,6 +199,19 @@ footer{
 /*MEDIAS*/
 
 @media (max-width: 600px) {
+  .nav_cont{
+      height: auto;
+      border-bottom: 1px solid;
+}
+.logo{
+  display: none;
+}
+.line{
+  display: none;
+}
+}
+
+@media (max-width: 765px) {
   .nav_cont{
       height: auto;
       border-bottom: 1px solid;

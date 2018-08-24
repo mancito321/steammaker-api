@@ -43,6 +43,13 @@ class Group extends Component {
       detail:"0"
     };           
   } 
+
+   handler(e) {
+    e.preventDefault()
+    this.setState({
+      detail: '0'
+    })
+  }
   componentDidMount(){
     axios.get('http://localhost:5000/group/group')
    .then((response)=>  {    
@@ -72,9 +79,9 @@ class Group extends Component {
     }else {
 
       try{
-      if(this.state.detail>0){
+      if(this.state.detail>=1){
         return( 
-          <Grupos id={this.state.detail}/>
+          <Grupos id={this.state.detail} handler={this.handler.bind(this)}/>
           )
       
       }else{

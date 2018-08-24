@@ -10,6 +10,7 @@ import Documents from './Documents'
 import Develops from './Develops'
 import Challenge from './ChallengeGroup'
 import Desarrollo from './DesarrolloGrupo'
+import Grupos from './Grupo'
 import Cha from './ChallengeDetail'
 const axios = require('axios');
 const rowDataSelector = (state, { griddleKey }) => {
@@ -43,7 +44,9 @@ class Reto extends Component {
     this.state = {
        modal: false,
       session:sessionchk,
-      id_challenge:"1",
+      id_challenge:"",     
+      id_group:"",     
+      punctuation:"",     
       edita:"0",
       group: [],
       develop: [],
@@ -128,15 +131,23 @@ class Reto extends Component {
       edita: event.target.id,
       id_challenge: event.target.name,
     });
-  }
-  componentDidUpdate(){
-    console.log(this.state.edita)
-  }
+  } 
   handler(e) {
     e.preventDefault()
     this.setState({
       edita: '0'
     })
+  }
+  handleButton (event){
+  
+    let variable = event.target.name.split(',')
+      console.log(variable[1])
+    this.setState({
+      edita: event.target.id,
+      id_challenge: variable[1],
+      id_group: variable[0],
+      punctuation: variable[2],
+    });    
   }
   render() {
     if (this.state.session) {
@@ -145,9 +156,14 @@ class Reto extends Component {
       try{
         if(this.state.edita == 1){
          return(
-        <Desarrollo id={this.state.id_challenge} group={this.state.group[0].id} punctuation={this.state.group[0].punctuation} handler={this.handler}/>
+      <Grupos id={this.state.id_group} handler={this.handler}/>
+          )
+        }else if(this.state.edita == 2){
+          return(
+      <Desarrollo id={this.state.id_challenge} group={this.state.id_group} punctuation={this.state.punctuation} handler={this.handler}/>
           )
         }else{
+
            return (
       <div>
       <Modal isOpen={this.state.modal} toggle={this.toggle.bind(this)} className='modal-dialog-centered modal-lg'>
@@ -179,18 +195,17 @@ class Reto extends Component {
 
      <Griddle components={{Layout: NewLayout}} data={this.state.develop} plugins={[plugins.LocalPlugin]}>
     <RowDefinition>
-      <ColumnDefinition id="gname" title="NOMBRE DEL RETO" />
-      <ColumnDefinition id="ca" title="FECHA DE PUBLICACIÓN" />
-      <ColumnDefinition id="fn" title="FECHA DE FINALIZACIÓN" />
-      <ColumnDefinition id="punctuation" title="PUNTAJE GENERAL" />
-      <ColumnDefinition id="reto" title="VER RETO" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleChange.bind(this)} name={rowData.id}>VER</Button>;})} />
-      <ColumnDefinition id="desarrollo" title="DESARROLLO" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleClick.bind(this)} name={rowData.id} id="1">VER</Button>;})} />
+      <ColumnDefinition id="gname" title="Nombre" />
+      <ColumnDefinition id="uname" title="Master Teacher" />
+      <ColumnDefinition id="ca" title="Fecha" />
+      <ColumnDefinition id="reto" title="Ver grupo" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleButton.bind(this)} id="1" name={rowData.id}>VER</Button>;})} />
+      <ColumnDefinition id="desarrollo" title="Ver desarrollo" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) => {  return <Button onClick={this.handleButton.bind(this)} name={[rowData.id,rowData.chid,rowData.punctuation]} id="2">VER</Button>;})} />
     </RowDefinition>
   </Griddle>
 
           </p>
          </Col>
-          <Col md="12" className="margin_container"><a href="/retos" ><Button>Regresar a ver los retos</Button></a></Col>
+          <Col md="12" className="margin_container"><Button onClick={this.props.handler}>Regresar a la pagina anterior</Button></Col>
       </Row>
 
       </Row>

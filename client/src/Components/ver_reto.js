@@ -115,6 +115,13 @@ class Retos extends Component {
     });
 
   }
+
+   handler(e) {
+    e.preventDefault()
+    this.setState({
+      detail: '0'
+    })
+  }
    toggle(event){
     this.setState({
       modal: !this.state.modal,
@@ -136,9 +143,9 @@ class Retos extends Component {
     }else {
 
       try{
-      if(this.state.detail>0){
+      if(this.state.detail>=1){
         return(
-          <Reto id={this.state.detail}/>
+          <Reto id={this.state.detail} handler={this.handler.bind(this)}/>
           )
 
       }else{
@@ -183,7 +190,7 @@ class Retos extends Component {
       <ColumnDefinition id="ca" title="Inicio" />
       <ColumnDefinition id="fn" title="Finalizado" />
       <ColumnDefinition id="desarrollos" title="Desarrollado" />
-      <ColumnDefinition id="verRe" title="Ver grupo" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+      <ColumnDefinition id="verRe" title="Ver reto" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
          return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
           })} />
        <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
