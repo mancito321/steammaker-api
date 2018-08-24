@@ -21,7 +21,6 @@ import DropIt from './DropIt'
 const axios = require('axios');
 
 class NuevoReto extends Component {
-
   constructor(props) {
     super(props);
     const logg = (sessionStorage.getItem('mySteamM') === null)

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { Route, Redirect } from 'react-router'
 import { Container, Row, Col,Button, FormGroup, Input , Label } from "reactstrap";
+import ShowDoc from './ShowDoc'
 const axios = require('axios');
 class Documents extends Component {
   constructor(props) {
@@ -10,42 +11,42 @@ class Documents extends Component {
     this.state = {
       session:sessionchk,
       documentation : []
-    };           
-  } 
+    };
+  }
   componentDidMount(){
     axios.get('http://localhost:5000/challenge/challenge/documentation',{
       params:{
         id: this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        documentation: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed 
+    // always executed
 
-     }); 
+     });
   }
 
-  
-   
-  
+
+
+
 
   render() {
-      return (  
+      return (
          <Row>
          {
            this.state.documentation.map(item=>{
              return <Col md="4" className="documents" key={item.id.toString()}><img src="http://via.placeholder.com/150x150"/><p>{item.cont}</p></Col>
            })
         }
-          
-         
+          <ShowDoc retoid={this.props.id}/>
+
          </Row>
       );
     }
