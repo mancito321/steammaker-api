@@ -5,14 +5,19 @@ import Nav from './Nav'
 import Footer from './Footer'
 import Documents from './Documents'
 import Develops from './Develops'
+import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, LabelList, Legend} from 'recharts';
   const axios = require('axios');
+  const radius = 10
+
 class Challenge extends Component {
+
   constructor(props) {
     super(props);
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
     this.state = {
       session:sessionchk,
-      challenge : []
+      challenge : [],
+      group:[]
     };
   }
   componentDidMount(){
@@ -20,6 +25,18 @@ class Challenge extends Component {
    .then((response)=>  {
       this.setState({
        challenge: response.data
+      });
+    })
+    .catch((error)=>  {
+    // handle error
+     })
+     .then(()=> {
+    // always executed
+     });
+   axios.get('http://localhost:5000/group/group/limit')
+   .then((response)=>  {
+      this.setState({
+       group: response.data
       });
     })
     .catch((error)=>  {
@@ -69,8 +86,19 @@ class Challenge extends Component {
              <Develops key="develops" id={this.state.challenge[0].id}/>
         </Col>
       </Row>
+      <Row>    
 
-
+     <Col md="12" className="line">  <BarChart width={1000} height={300} data={this.state.group} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+       <CartesianGrid strokeDasharray="3 3"/>
+       <XAxis dataKey="name"/>
+       <YAxis/>
+       <Tooltip/>
+       <Legend />
+       <Bar dataKey="puntos" fill="#8884d8" minPointSize={5}>         
+        </Bar>      
+      </BarChart></Col>
+    
+      </Row>
       </Row>
 
       </Container>

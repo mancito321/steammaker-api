@@ -27,6 +27,16 @@ router.get('/group',(req,res)=>{
   });
   //connection.end();
 });
+
+// ALL GROUP LIMIT
+router.get('/group/limit',(req,res)=>{
+  connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group ORDER BY punctuation DESC LIMIT 20;`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
 // GROUP
 router.get('/detail:id?',(req,res)=>{
   connection.query(`SELECT gr.id,gr.name,gr.punctuation,i.name as 'iname',fr.name as 'frname',u.user,(SELECT numero FROM participants WHERE id_group = gr.id) as 'participantes' FROM steammakers.group gr JOIN franchise fr on gr.id_franchise = fr.id JOIN institution i on i.id = fr.id_institution JOIN users u on u.id = gr.mt WHERE gr.id = ${req.query.id};`, function (error, results, fields) {
