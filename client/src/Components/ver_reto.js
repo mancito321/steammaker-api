@@ -5,6 +5,7 @@ import Nav from './Nav'
 import Footer from './Footer'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
+import { ChallengeCon } from './ChallengeContext';
 import Reto from './Reto'
 import Griddle, { plugins, RowDefinition, ColumnDefinition,Components} from 'griddle-react';
 var LocalPlugin = require('griddle-react').plugins.LocalPlugin;
@@ -44,7 +45,7 @@ class Retos extends Component {
       session:sessionchk,
       retos : [],
       modal: false,
-      edit : [],   
+      edit : [],
       active : false,
       activeA : true,
       detail:"0",
@@ -74,8 +75,8 @@ class Retos extends Component {
       id:this.state.edit,
       active:this.state.active
     })
-   .then((response)=>  {   
-      
+   .then((response)=>  {
+
     })
     .catch((error)=>  {
     // handle error
@@ -92,8 +93,8 @@ class Retos extends Component {
       id:this.state.edit,
       active:this.state.activeA
     })
-   .then((response)=>  {   
-      
+   .then((response)=>  {
+
     })
     .catch((error)=>  {
     // handle error
@@ -108,9 +109,9 @@ class Retos extends Component {
  }
 
   handleChange (event){
-   
+
     this.setState({
-      detail: event.target.name,     
+      detail: event.target.name,
     });
 
   }
@@ -119,14 +120,14 @@ class Retos extends Component {
       modal: !this.state.modal,
        edit: event.target.name,
         active:!this.state.active,
-    }); 
+    });
   };
     toggle1(event){
     this.setState({
       modal: !this.state.modal,
       edit: event.target.name,
       activeA:!this.state.activeA,
-    }); 
+    });
   };
 
   render() {
@@ -192,6 +193,7 @@ class Retos extends Component {
   </Griddle>
    </Col>
    <Col md="12" className="center margin_container"><Link to="/nuevo_grupo" ><Button>Crear un grupo</Button></Link></Col>
+  
       </Row>
 
       </Row>

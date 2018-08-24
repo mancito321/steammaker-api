@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import { Link } from 'react-router-dom'
 import '../App.css';
+
+import { ChallengeCon } from './ChallengeContext';
 import { Container, Row, Col,Button, FormGroup, Input , Label } from "reactstrap";
 import { Collapse,  Navbar,  NavbarToggler,  NavbarBrand,  Nav,  NavItem,  NavLink,  UncontrolledDropdown,  DropdownToggle,  DropdownMenu,  DropdownItem } from 'reactstrap';
 
@@ -45,11 +47,22 @@ class Header extends React.Component {
                   Retos
                 </DropdownToggle>
                 <DropdownMenu right>
-                 <NavLink href="/nuevo_reto" name="0" onClick={this.handleChange.bind(this)}>
-                <DropdownItem>
-                    Nuevo reto
-                </DropdownItem>
-                </NavLink>
+
+                <ChallengeCon>
+                  {context => {
+                    console.log('Context :');
+                    console.log(context);
+                   if (context.state==1) {
+                     return(
+                       <NavLink href="/nuevo_reto" name="0" onClick={this.handleChange.bind(this)}>
+                      <DropdownItem>
+                          Nuevo reto
+                      </DropdownItem>
+                      </NavLink>
+                     )
+                   }
+                 }}
+                </ChallengeCon>
                  <NavLink href="/retos" name="0" onClick={this.handleChange.bind(this)}>
                 <DropdownItem>
                     Ver retos
@@ -62,10 +75,20 @@ class Header extends React.Component {
                   Grupos
                 </DropdownToggle>
                 <DropdownMenu right>
-                 <NavLink href="/nuevo_grupo">
-                 <DropdownItem>
-                   Nuevo Grupo
-                </DropdownItem></NavLink>
+                <ChallengeCon>
+                  {context => {
+                    console.log('Context :');
+                    console.log(context);
+                   if (context.state==1) {
+                     return(
+                       <NavLink href="/nuevo_grupo">
+                       <DropdownItem>
+                         Nuevo Grupo
+                      </DropdownItem></NavLink>
+                     )
+                   }
+                 }}
+                </ChallengeCon>
                  <NavLink href="/grupos" name="0" onClick={this.handleChange.bind(this)}>
                 <DropdownItem>
                     Ver Grupos
@@ -74,7 +97,14 @@ class Header extends React.Component {
                 </DropdownMenu>
               </UncontrolledDropdown>
               <NavItem>
-                <NavLink onClick={()=>{sessionStorage.removeItem('mySteamM')}}><Link to="/">Salir</Link></NavLink>
+                  <ChallengeCon>
+                    {context => {
+                       return(
+                         <NavLink onClick={()=>{sessionStorage.removeItem('mySteamM');context.actions.logOut();}}><Link to="/">Salir</Link></NavLink>
+                       )
+
+                   }}
+                  </ChallengeCon>
               </NavItem>
 
             </Nav>

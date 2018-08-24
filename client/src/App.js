@@ -13,36 +13,59 @@ import NuevoDesarrollo from './Components/NuevoDesarrollo';
 import UpFile from './Components/UpFile';
 import {ChallengePro} from './Components/ChallengeContext';
 import './App.css'
+const axios = require('axios');
 
 class App extends Component {
   state = {
-    reto_id:0
+    permission:0
   }
 
   render() {
     return (
-      <ChallengePro value={
-          {
-            state:this.state.reto_id,
-            actions:{
-              handleReto:()=>{
-                console.log('Hola')
-              }
+      <ChallengePro value={{
+          state:this.state.permission,
+          actions:{
+            update:()=>{if (this.state.permission==0) {
+
+                   let session=JSON.parse(sessionStorage.getItem('mySteamM'))
+                   axios.get('http://localhost:5000/api/auth/me',{
+                     headers: {
+                         'content-type': 'multipart/form-data',
+                         'x-access-token':session.token
+                     }
+                 })
+                  .then((response)=>  {
+                     this.setState({
+                       permission:response.data.rol
+                     })
+                   })
+                   .catch((error)=>  {
+                   // handle error
+                   console.log('Fuck '+error);
+                    })
+                    .then(()=> {
+                   console.log(this.state.permission);
+                    });
+            }},
+            logOut:()=>{
+              this.setState({
+                permission:0
+              })
             }
+
           }
-        }>
+        }}>
       <Router >
           <Switch>
             <Route path='/me' component={Me} />
             <Route path='/reto' component={Challenge} />
             <Route path='/inicio' component={Inicio} />
-            <Route path='/nuevo_grupo' component={NuevoGrupo} />
-            <Route path='/nuevo_reto' component={NuevoReto} />
+            <Route path='/nuevo_grupo' component={this.state.permission==1 ? NuevoGrupo:Grupos} />
+            <Route path='/nuevo_reto' component={this.state.permission==1 ? NuevoReto:Challenge} />
             <Route path='/register' component={Reg} />
             <Route path='/grupos' component={Grupos} />
             <Route path='/retos' component={Retos} />
             <Route path='/' component={Log} />
-
           </Switch>
       </Router>
       </ChallengePro>

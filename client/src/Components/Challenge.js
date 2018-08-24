@@ -5,6 +5,7 @@ import Nav from './Nav'
 import Footer from './Footer'
 import Documents from './Documents'
 import Develops from './Develops'
+import { ChallengeCon } from './ChallengeContext';
   const axios = require('axios');
 class Challenge extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Challenge extends Component {
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
     this.state = {
       session:sessionchk,
-      challenge : []
+      challenge : [],
+      permission:""
     };
   }
   componentDidMount(){
@@ -28,6 +30,29 @@ class Challenge extends Component {
      .then(()=> {
     // always executed
      });
+
+  }
+  componentWillMount(){
+     let session=JSON.parse(sessionStorage.getItem('mySteamM'))
+     axios.get('http://localhost:5000/api/auth/me',{
+       headers: {
+           'content-type': 'multipart/form-data',
+           'x-access-token':session.token
+       }
+   })
+    .then((response)=>  {
+       this.setState({
+         permission:response.data.rol
+       })
+     })
+     .catch((error)=>  {
+     // handle error
+     console.log('Fuck '+error);
+      })
+      .then(()=> {
+     console.log(this.state.permission);
+      });
+
   }
 
   render() {
@@ -39,6 +64,19 @@ class Challenge extends Component {
         return (
       <div>
       <Container fluid="true">
+        <ChallengeCon>
+          {context => {
+
+            context.actions.update();
+            console.log('Context :');
+            console.log(context);
+            console.log('done');
+           return(
+             <div>
+             </div>
+           )
+         }}
+        </ChallengeCon>
        <Row>
        <Col md="2" className="nav_cont"><Nav/></Col>
        <Col md="2"></Col>
@@ -47,6 +85,7 @@ class Challenge extends Component {
        <Row>
        <Col md="12">
        <h2 className="titulo">INICIO</h2><small>Inicio</small>
+
        </Col>
        <Row  className="margin_container">
        <Col md="12"><h4 className="subtitulo">Último reto</h4></Col>

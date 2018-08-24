@@ -300,6 +300,7 @@ class NuevoReto extends Component {
             </div>
           );
         } catch (error) {
+          console.log(error);
           return (
             <p></p>
           );

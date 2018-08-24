@@ -24,9 +24,9 @@ const connection = require('../dbconf/conf');
 router.post('/register', function(req, res) {
   // Create salt and hashing
   var salt = bcrypt.genSaltSync(8);
-  console.log(req.body.password);
+
   var hashedPassword = bcrypt.hashSync(req.body.password, salt);
-  console.log(hashedPassword);
+
   // creating new user sql sentence
   let sql = `INSERT INTO users(user,rol,email,active,password) VALUES ('${req.body.user}',1,'${req.body.email}',1,'${hashedPassword}')`;
   connection.query(sql,function (err, user) {
@@ -45,9 +45,9 @@ router.post('/newfiletest',upload.any(), (req, res)=> {
   // Handling files
 
   let formData = req.files;
-  console.log('form data', formData);
-  console.log('form body', req.body);
-  console.log('form data', formData[0]);
+
+
+
   cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
   // /cidstorage/steammakers/
   res.status(200).send("We are on test")
@@ -67,10 +67,10 @@ router.post('/newreto',upload.any(), (req, res)=> {
     connection.query(sql,function (err, reto) {
       if (err) return res.status(500).send("There was a problem registering the challenge.")
       // Respondemos
-      // console.log(req.files);
+      //
       let formData = req.files;
       formData.forEach((file)=>{
-        console.log(file.fieldname);
+
         cdnUse.upFiles('steammakers/reto/retos/'+reto.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
       })
       // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
@@ -97,9 +97,9 @@ router.post('/newgroup',upload.any(), (req, res)=> {
     // en olace van los participantes
     let sql = `INSERT INTO steammakers.group(id_franchise,name,numero) VALUES(${req.body.franchise},'${req.body.name}','${req.body.numero_participantes}')`;
     //Insertamos en la db
-    console.log('insert :'+sql);
+
     connection.query(sql,function (err, grupo) {
-      if (err) console.log('fail at first'+err);
+      if (err)
       if (err) return res.status(500).send("There was a problem registering the group.")
       // Respondemos
       let formData = req.files;
@@ -120,7 +120,7 @@ router.post('/newgroup',upload.any(), (req, res)=> {
         connection.query(sql,function (err, user) {
           if (err) return res.status(500).send("There was a problem registering the user."+err)
           // create a token
-          console.log(user);
+
           res.status(200).send("Nuevo Grupo creado");
         });
 
@@ -137,12 +137,12 @@ router.post('/newgroup',upload.any(), (req, res)=> {
 });
 // Get resources
 router.get('/files',(req,res)=>{
-  console.log(req.query.id);
+
   cdnUse.getFiles('steammakers/reto/retos/'+req.query.id,res)
 })
 // Get fileset
 router.get('/resources',(req,res)=>{
-  console.log(req.query.id);
+
   let sql = `SELECT * FROM steammakers.challenge WHERE id=${req.query.id}`
   connection.query(sql, (err, resourcesRes)=> {
     if (err) return res.status(500).send("There was a problem registering the solution.")
@@ -150,6 +150,7 @@ router.get('/resources',(req,res)=>{
     res.status(200).send(resourcesRes);
   });
 })
+
 // New Solution
 
 router.post('/solucionreto',upload.any(), function(req, res) {
@@ -182,7 +183,8 @@ router.post('/solucionreto',upload.any(), function(req, res) {
 
 // My info token
 router.get('/me', function(req, res) {
-  console.log(req.headers);
+
+
   var token = req.headers['x-access-token'];
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
 
@@ -200,12 +202,12 @@ router.post('/login', function(req, res) {
     if (err) return res.status(500).send('Error on the server.'+err);
     if (results == '') return res.status(404).send('No user found.');
     // compare password
-    console.log(req.body.password);
-    console.log(results[0].id_group);
-    console.log(results[0].id);
+
+
+
     var passwordIsValid = bcrypt.compareSync(req.body.password,results[0].password);
     if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
-    var token = jwt.sign({ id: results[0].id,group:results[0].id_group }, config.secret, {
+    var token = jwt.sign({ id: results[0].id,rol: results[0].rol,group:results[0].id_group }, config.secret, {
       expiresIn: 86400 // expires in 24 hours
     });
     res.status(200).send({ auth: true, token: token });
