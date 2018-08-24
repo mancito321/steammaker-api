@@ -204,7 +204,7 @@ class Grupo extends Component {
 
           </p>
          </Col>
-          <Col md="12" className="margin_container"><a href="/grupos" ><Button>Regresar a ver los grupos</Button></a></Col>
+          <Col md="12" className="margin_container"><Button onClick={this.props.handler}>Regresar a la pagina anterior</Button></Col>
       </Row>
 
       </Row>

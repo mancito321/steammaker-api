@@ -114,6 +114,13 @@ class Retos extends Component {
     });
 
   }
+
+   handler(e) {
+    e.preventDefault()
+    this.setState({
+      detail: '0'
+    })
+  }
    toggle(event){
     this.setState({
       modal: !this.state.modal,
@@ -135,9 +142,9 @@ class Retos extends Component {
     }else {
 
       try{
-      if(this.state.detail>0){
+      if(this.state.detail>=1){
         return(
-          <Reto id={this.state.detail}/>
+          <Reto id={this.state.detail} handler={this.handler.bind(this)}/>
           )
 
       }else{
