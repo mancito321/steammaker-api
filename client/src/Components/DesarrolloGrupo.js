@@ -4,6 +4,7 @@ import { Container, Row, Col,Button, FormGroup, Input , Label,Modal, ModalHeader
 import Nav from './Nav'
 import Footer from './Footer'
 import Cha from './ChallengeGroup'
+import DesarrolloDetail from './DesarrolloDetail'
 import { ChallengeCon } from './ChallengeContext';
 import { RadarChart,PolarGrid,PolarAngleAxis,PolarRadiusAxis,Radar,Legend} from 'recharts';
 
@@ -15,6 +16,7 @@ class Challenge extends Component {
     this.state = {
       modal: false,
       modals: false,
+      chall: false,
       session:sessionchk,
       edit:'',
       valor1:0,
@@ -41,7 +43,11 @@ class Challenge extends Component {
     this.setState({
       modals: !this.state.modals
     });
-  }
+  }  modalSol() {
+      this.setState({
+        chall: !this.state.chall
+      });
+    }
 
 
   validateForm() {
@@ -75,6 +81,7 @@ class Challenge extends Component {
       });
     // always executed
      });
+
   }
    handleInputChanged(e){
     switch(e.target.id) {
@@ -218,7 +225,8 @@ handleButtonChange(event){
         <Button onClick={this.toggle}>Ver reto</Button>
         </Col>
         <Col md="12">  <h5>Ver desarrollo</h5>
-        <Button onClick={this.toggle}>Ver reto</Button></Col>
+        <Button onClick={this.modalSol.bind(this)}>Ver reto</Button>
+      </Col>
         </Row>
 
         <Row className="margin_container form_margin ">
@@ -326,6 +334,12 @@ handleButtonChange(event){
           <Cha id={this.state.challenge[0].id_challenge}/>
           </ModalBody>
         </Modal>
+        <Modal isOpen={this.state.chall} toggle={this.modalSol.bind(this)} className='modal-dialog-centered modal-lg'>
+         <ModalHeader toggle={this.modalSol.bind(this)}></ModalHeader>
+         <ModalBody>
+         <DesarrolloDetail id={this.state.challenge[0].id_challenge} group={this.state.challenge[0].id_group} />
+         </ModalBody>
+       </Modal>
       </Container>
        <footer><Footer/></footer></div>
 

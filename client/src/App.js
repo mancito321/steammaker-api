@@ -22,35 +22,66 @@ class App extends Component {
   }
   componentDidMount(){
   console.log('did mount');
+  let session=JSON.parse(sessionStorage.getItem('mySteamM'))
+  console.log(session);
+  if (session!=null && this.state.permission==0) {
 
+        axios.get('http://localhost:5000/api/auth/me',{
+          headers: {
+              'content-type': 'multipart/form-data',
+              'x-access-token':session.token
+          }
+      })
+       .then((response)=>  {
+         console.log('responses: '+response);
+          this.setState({
+            permission:response.data.rol,
+            grupo:response.data.group
+          })
+        })
+        .catch((error)=>  {
+        // handle error
+        console.log('Fuck '+error);
+         })
+         .then(()=> {
+        console.log(this.state.permission);
+         });
+  }
   }
   componentWillMount(){
-    let session=JSON.parse(sessionStorage.getItem('mySteamM'))
-    axios.get('http://localhost:5000/api/auth/me',{
-      headers: {
-          'content-type': 'multipart/form-data',
-          'x-access-token':session.token
-      }
-  })
-   .then((response)=>  {
-      this.setState({
-        permission:response.data.rol,
-        grupo:response.data.group
-      })
-    })
-    .catch((error)=>  {
-    // handle error
-    console.log('Fuck '+error);
-     })
-     .then(()=> {
-    console.log(this.state.permission);
-     });
+
+
   }
   componentDidUpdate(){
-
+    console.log('Did update');
   }
   componentWillUpdate(){
     console.log('will update');
+    let session=JSON.parse(sessionStorage.getItem('mySteamM'))
+    console.log(session);
+    if (session!=null && this.state.permission==0) {
+
+          axios.get('http://localhost:5000/api/auth/me',{
+            headers: {
+                'content-type': 'multipart/form-data',
+                'x-access-token':session.token
+            }
+        })
+         .then((response)=>  {
+           console.log('responses: '+response);
+            this.setState({
+              permission:response.data.rol,
+              grupo:response.data.group
+            })
+          })
+          .catch((error)=>  {
+          // handle error
+          console.log('Fuck '+error);
+           })
+           .then(()=> {
+          console.log(this.state.permission);
+           });
+    }
   }
 
   render() {

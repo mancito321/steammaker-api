@@ -61,7 +61,9 @@ router.post('/newreto',upload.any(), (req, res)=> {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
     //Creamos los valores a colocar
     let today= new Date();
-    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','','${req.body.activo}','${req.body.TextReto}','${req.body.recursos}')`;
+    let activo=0;
+    req.body.activo ? activo =1:acivo=0;
+    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','','${activo}','${req.body.TextReto}','${req.body.recursos}')`;
     //Insertamos en la db
     let thisId=0;
     connection.query(sql,function (err, reto) {
@@ -69,6 +71,7 @@ router.post('/newreto',upload.any(), (req, res)=> {
       // Respondemos
       //
       let formData = req.files;
+      console.log(formData);
       formData.forEach((file)=>{
 
         cdnUse.upFiles('steammakers/reto/retos/'+reto.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
@@ -95,7 +98,7 @@ router.post('/newgroup',upload.any(), (req, res)=> {
     //Creamos los valores a colocar
 
     // en olace van los participantes
-    let sql = `INSERT INTO steammakers.group(id_franchise,name,numero) VALUES(${req.body.franchise},'${req.body.name}','${req.body.numero_participantes}')`;
+    let sql = `INSERT INTO steammakers.group(id_franchise,name,numero,mt) VALUES(${req.body.franchise},'${req.body.name}','${req.body.numero_participantes}','${decoded.id}')`;
     //Insertamos en la db
 
     connection.query(sql,function (err, grupo) {
@@ -139,6 +142,11 @@ router.post('/newgroup',upload.any(), (req, res)=> {
 router.get('/files',(req,res)=>{
 
   cdnUse.getFiles('steammakers/reto/retos/'+req.query.id,res)
+})
+// soluciones
+router.get('/filesSol',(req,res)=>{
+
+  cdnUse.getFiles('steammakers/reto/desarrollo/'+req.query.id+'/'+req.query.group,res)
 })
 // Get fileset
 router.get('/resources',(req,res)=>{

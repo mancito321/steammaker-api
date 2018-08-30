@@ -13,12 +13,15 @@ componentDidMount (){
 
 }
   componentWillMount(){
-    axios.get('http://localhost:5000/api/auth/files',{
+    axios.get('http://localhost:5000/api/auth/filesSol',{
       params: {
-      id: this.props.retoid  }
+      id: this.props.id,
+      group:this.props.group
+      }
     })
     .then( (response) =>{
       // handle success
+
       let filesPath = []
       response.data.map((file,i)=>{
         filesPath.push(file.Path+file.ObjectName)
@@ -26,6 +29,7 @@ componentDidMount (){
       this.setState({
         recursos:filesPath
       })
+      console.log(this.state.recursos);
     })
     .catch(function (error) {
       // handle error
@@ -37,14 +41,13 @@ componentDidMount (){
     });
   }
   render(){
-    console.log(this.state.recursos);
     return(
       <ul>
         {this.state.recursos.map((file,i)=>{
           let ref ="https://cidpullzonestorage.b-cdn.net"+file.slice(11)
           return(
             <a href={ref} target="_blank">
-              <li>{file.slice(38)}</li>
+              <li>{file.slice(46)}</li>
             </a>
           )
         })

@@ -5,8 +5,9 @@ import Nav from './Nav'
 import Footer from './Footer'
 import Documents from './Documents'
 import Develops from './Develops'
+import ShowSol from './ShowSol'
   const axios = require('axios');
-class Challenge extends Component {
+class DesarrolloDetail extends Component {
   constructor(props) {
     super(props);
     const sessionchk =sessionStorage.getItem('mySteamM')===null;
@@ -16,15 +17,17 @@ class Challenge extends Component {
     };
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/challenge/actual',{
+    axios.get('http://localhost:5000/challenge/desarrollo',{
       params:{
-        id:this.props.id
+        id:this.props.id,
+        group:this.props.group
       }
     })
    .then((response)=>  {
       this.setState({
        challenge: response.data
       });
+      console.log(response.data);
     })
     .catch((error)=>  {
     // handle error
@@ -32,27 +35,6 @@ class Challenge extends Component {
      .then(()=> {
     // always executed
      });
-     console.log('Aca empiezan:');
-     console.log(this.props.grupo);
-     console.log(this.props.id);
-     axios.get('http://localhost:5000/challenge/boton',{
-       params:{
-         id_grupo: this.props.grupo,
-         id_challenge: this.props.id
-       }
-     })
-    .then((response)=>  {
-       this.setState({
-        boton: response.data[0].boton
-       });
-     })
-     .catch((error)=>  {
-     // handle error
-      })
-      .then(()=> {
-
-     // always executed
-      });
   }
 
   render() {
@@ -63,21 +45,16 @@ class Challenge extends Component {
         return (
       <Row  className="margin_container">
          <Col md="6" xs="12">
-         <h5>{this.state.challenge[0].name}</h5>
-         <p>{this.state.challenge[0].contenido}</p>
+         <h5>Grupo {this.state.challenge[0].gname}</h5>
           <h5>Fecha de publicación</h5>
 
         <p>{this.state.challenge[0].ca}</p>
-             <h5>Finalizado</h5>
-
-          <p>{this.state.challenge[0].fn}</p>
-        </Col>
+             </Col>
 
         <Col md="4" xs="12">
-          <h5>Documentos</h5>
-          <Documents key="document" id={this.state.challenge[0].id}/>
+          <h5>Documentos solución</h5>
+          <ShowSol key="document" id={this.props.id} group={this.props.group}/>
       </Col>
-      
 
       </Row>
       );
@@ -90,4 +67,4 @@ class Challenge extends Component {
   }
 }
 
-export default Challenge;
+export default DesarrolloDetail;

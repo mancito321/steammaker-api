@@ -62,6 +62,8 @@ router.get('/actual:id?',(req,res)=>{
   //connection.end();
 });
 
+
+
 // Punctuatio
 router.post('/punctuation',(req,res)=>{
   console.log(req.body.punctuation)
@@ -98,6 +100,15 @@ router.get('/user/:id',(req,res)=>{
 router.get('/desarrollo',(req,res)=>{
   console.log(req.params)
   connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.user as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where ch.id = ${req.query.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+router.get('/desarrolloDet',(req,res)=>{
+  console.log(req.params)
+  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.user as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where gr.id = ${req.query.group} and ch.id = ${req.query.id};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;

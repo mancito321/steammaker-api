@@ -5,6 +5,8 @@ import Nav from './Nav'
 import Footer from './Footer'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
+
+import { ChallengeCon } from './ChallengeContext';
 import Reto from './Reto'
 import Griddle, { plugins, RowDefinition, ColumnDefinition,Components} from 'griddle-react';
 var LocalPlugin = require('griddle-react').plugins.LocalPlugin;
@@ -137,6 +139,36 @@ class Retos extends Component {
   };
 
   render() {
+    let GridFixMt=(<Griddle components={{Layout: NewLayout}} data={this.state.retos} plugins={[plugins.LocalPlugin]}>
+   <RowDefinition>
+     <ColumnDefinition id="logo" title="Logo" customComponent={enhancedWithRowData(id)} />
+     <ColumnDefinition id="name" title="Nombre" />
+     <ColumnDefinition id="ca" title="Inicio" />
+     <ColumnDefinition id="fn" title="Finalizado" />
+     <ColumnDefinition id="desarrollos" title="Desarrollado" />
+     <ColumnDefinition id="verRe" title="Ver reto" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+        return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
+         })} />
+         <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+          return <div>{rowData.active == 0 ? (<input type="checkbox" name={rowData.id} onClick={this.toggle.bind(this)} />) : (<input type="checkbox"  checked  name={rowData.id} onClick={this.toggle1.bind(this)}/>) }</div>;
+           })} />
+
+
+   </RowDefinition>
+ </Griddle>)
+ let GridFixSt=(<Griddle components={{Layout: NewLayout}} data={this.state.retos} plugins={[plugins.LocalPlugin]}>
+<RowDefinition>
+  <ColumnDefinition id="logo" title="Logo" customComponent={enhancedWithRowData(id)} />
+  <ColumnDefinition id="name" title="Nombre" />
+  <ColumnDefinition id="ca" title="Inicio" />
+  <ColumnDefinition id="fn" title="Finalizado" />
+  <ColumnDefinition id="desarrollos" title="Desarrollado" />
+  <ColumnDefinition id="verRe" title="Ver reto" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
+     return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
+      })} />
+</RowDefinition>
+</Griddle>)
+
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
@@ -144,8 +176,17 @@ class Retos extends Component {
       try{
       if(this.state.detail>=1){
         return(
+          <ChallengeCon>
+            {context => {
+              console.log('context State');
+              console.log(context.state);
+               return(
+                 <Reto id={this.state.detail} grupo={context.grupo} handler={this.handler.bind(this)}/>
+               )
 
-<Reto id={this.state.detail}  handler={this.handler.bind(this)}/>
+           }}
+          </ChallengeCon>
+
           )
 
       }else{
@@ -183,23 +224,21 @@ class Retos extends Component {
        </Col>
        <Row  className="margin_container">
    <Col md="12">
-     <Griddle components={{Layout: NewLayout}} data={this.state.retos} plugins={[plugins.LocalPlugin]}>
-    <RowDefinition>
-      <ColumnDefinition id="logo" title="Logo" customComponent={enhancedWithRowData(id)} />
-      <ColumnDefinition id="name" title="Nombre" />
-      <ColumnDefinition id="ca" title="Inicio" />
-      <ColumnDefinition id="fn" title="Finalizado" />
-      <ColumnDefinition id="desarrollos" title="Desarrollado" />
-      <ColumnDefinition id="verRe" title="Ver reto" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
-         return <Button name={rowData.id} onChange={this.handleChange.bind(this)} onClick={this.handleChange.bind(this)} >VER</Button>;
-          })} />
-          <ColumnDefinition id="ver" title="Opciones" customComponent={enhancedWithRowData(({ value, griddleKey, rowData }) =>{
-           return <div>{rowData.active == 0 ? (<input type="checkbox" name={rowData.id} onClick={this.toggle.bind(this)} />) : (<input type="checkbox"  checked  name={rowData.id} onClick={this.toggle1.bind(this)}/>) }</div>;
-            })} />
 
+     <ChallengeCon>
+       {context => {
+         console.log('context State');
+         console.log(context.state);
+          if (context.state==1) {
+            return(
+                  GridFixMt
+            )
+          }else if (context.state==2) {
+            return(GridFixSt)
+          }
 
-    </RowDefinition>
-  </Griddle>
+      }}
+     </ChallengeCon>
 
    </Col>
    <Col md="12" className="center margin_container"><Link to="/nuevo_reto" ><Button>Crear un reto</Button></Link></Col>

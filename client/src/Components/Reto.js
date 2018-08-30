@@ -48,7 +48,7 @@ class Reto extends Component {
       session:sessionchk,
       id_challenge:"",
       id_group:"",
-      boton:null,
+      boton:false,
       punctuation:"",
       edita:"0",
       group: [],
@@ -120,6 +120,25 @@ class Reto extends Component {
 
     // always executed
      });
+     axios.get('http://localhost:5000/challenge/boton',{
+       params:{
+         id_challenge:this.props.id,
+         id_grupo:this.props.grupo
+       }
+     })
+    .then((response)=>  {
+       if (response.data[0].boton==1) {
+         this.setState({
+          boton: true
+         });
+       }
+     })
+     .catch((error)=>  {
+     // handle error
+      })
+      .then(()=> {
+     // always executed
+      });
   }
    toggle(){
     this.setState({
@@ -156,6 +175,8 @@ class Reto extends Component {
       punctuation: variable[2],
     });
   }
+  // Validamos Submmit
+
   handleDeve  = ()=>{
     this.setState({
       development:true
@@ -218,7 +239,19 @@ class Reto extends Component {
           </Row>
          </Col>
          <Col xs="12">
-           <Button onClick={this.handleDeve} >Desarrollo</Button>
+           <ChallengeCon>
+             {context => {
+                if (context.state==2) {
+                  return(
+                        <Button onClick={this.handleDeve} disabled={this.state.boton} >Desarrollo</Button>
+                  )
+                }else {
+                  return(<div></div>)
+                }
+
+            }}
+           </ChallengeCon>
+
          </Col>
          <Col md="12">
          <h4 className="subtitulo">Desarrollos presentados</h4>
