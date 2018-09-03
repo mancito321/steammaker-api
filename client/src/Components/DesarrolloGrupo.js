@@ -54,7 +54,7 @@ class Challenge extends Component {
     return this.state.valor1e.length == 0 && this.state.valor2e.length == 0 && this.state.valor3e.length == 0 && this.state.valor4e.length == 0 && this.state.valor5e.length == 0 ;
   }
   componentDidMount(){
-    axios.get('159.89.229.68:5000/group/challengedeep',{
+    axios.get('http://159.89.229.68:5000/group/challengedeep',{
       params:{
         id:this.props.id,
         group:this.props.group
@@ -167,7 +167,7 @@ class Challenge extends Component {
 
 handleButtonChange(event){
 
-  axios.post('159.89.229.68:5000/challenge/punctuation',{
+  axios.post('http://159.89.229.68:5000/challenge/punctuation',{
         id:this.props.id,
         punctuation:this.state.punctuation,
         punctuationT:this.state.punctuation+this.props.punctuation,

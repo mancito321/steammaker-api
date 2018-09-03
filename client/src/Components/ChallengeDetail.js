@@ -16,7 +16,7 @@ class Challenge extends Component {
     };
   }
   componentDidMount(){
-    axios.get('159.89.229.68:5000/challenge/actual',{
+    axios.get('http://159.89.229.68:5000/challenge/actual',{
       params:{
         id:this.props.id
       }
@@ -35,7 +35,7 @@ class Challenge extends Component {
      console.log('Aca empiezan:');
      console.log(this.props.grupo);
      console.log(this.props.id);
-     axios.get('159.89.229.68:5000/challenge/boton',{
+     axios.get('http://159.89.229.68:5000/challenge/boton',{
        params:{
          id_grupo: this.props.grupo,
          id_challenge: this.props.id

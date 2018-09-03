@@ -13,7 +13,7 @@ componentDidMount (){
 
 }
   componentWillMount(){
-    axios.get('159.89.229.68:5000/api/auth/filesSol',{
+    axios.get('http://159.89.229.68:5000/api/auth/filesSol',{
       params: {
       id: this.props.id,
       group:this.props.group

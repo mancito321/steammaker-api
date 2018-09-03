@@ -23,7 +23,7 @@ class Challenge extends Component {
     };
   }
   componentDidMount(){
-    axios.get('159.89.229.68:5000/challenge/challenge/last')
+    axios.get('http://159.89.229.68:5000/challenge/challenge/last')
    .then((response)=>  {
       this.setState({
        challenge: response.data
@@ -39,7 +39,7 @@ class Challenge extends Component {
   }
   componentWillMount(){
      let session=JSON.parse(sessionStorage.getItem('mySteamM'))
-     axios.get('159.89.229.68:5000/api/auth/me',{
+     axios.get('http://159.89.229.68:5000/api/auth/me',{
        headers: {
            'content-type': 'multipart/form-data',
            'x-access-token':session.token
@@ -57,7 +57,7 @@ class Challenge extends Component {
       .then(()=> {
      console.log(this.state.permission);
       });
-      axios.get('159.89.229.68:5000/group/group/limit')
+      axios.get('http://159.89.229.68:5000/group/group/limit')
       .then((response)=>  {
          this.setState({
           group: response.data

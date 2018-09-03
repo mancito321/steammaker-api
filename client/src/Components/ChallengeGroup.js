@@ -16,7 +16,7 @@ class Challenge extends Component {
     };
   }
   componentDidMount(){
-    axios.get('159.89.229.68:5000/challenge/actual',{
+    axios.get('http://159.89.229.68:5000/challenge/actual',{
       params:{
         id:this.props.id
       }

@@ -27,7 +27,7 @@ class Log extends Component {
   }
 
   handleSubmit = event => {
-    axios.post('159.89.229.68:5000/api/auth/register', {
+    axios.post('http://159.89.229.68:5000/api/auth/register', {
       user: this.state.text,
       rol: this.state.number,
       email: this.state.email,

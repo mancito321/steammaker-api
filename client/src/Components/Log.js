@@ -27,11 +27,12 @@ class Log extends Component {
   }
 
   handleSubmit (event) {
-    axios.post('159.89.229.68:5000/api/auth/login', {
+    axios.post('http://159.89.229.68:5000/api/auth/login', {
       user: this.state.text,
       password: this.state.password
     })
     .then( (response) =>{
+      console.log(response);
       console.log(response.data);
       sessionStorage.setItem('mySteamM', JSON.stringify(response.data));
       this.setState({
@@ -39,6 +40,7 @@ class Log extends Component {
       });
     })
     .catch( (error)=> {
+      console.log(error);
        this.setState({ failM: true });
     });
     event.preventDefault();

@@ -44,7 +44,7 @@ class NuevoDesarrollo extends Component {
   }
 componentWillMount(){
   console.log('will mount');
-  axios.get('159.89.229.68:5000/api/auth/resources',{
+  axios.get('http://159.89.229.68:5000/api/auth/resources',{
     params: {
     id: this.state.id  }
   })
@@ -65,7 +65,7 @@ componentWillMount(){
     // always executed
     console.log('challenge_ok');
   });
-  axios.get('159.89.229.68:5000/challenge/actual',{
+  axios.get('http://159.89.229.68:5000/challenge/actual',{
     params:{
       id:this.props.id
     }
@@ -116,7 +116,7 @@ componentWillMount(){
         }
     }
     console.log(config);
-    axios.post('159.89.229.68:5000/api/auth/solucionreto', formData,config)
+    axios.post('http://159.89.229.68:5000/api/auth/solucionreto', formData,config)
     .then( (response) =>{
       document.getElementById('solutionFile').value = null;
       this.setState({

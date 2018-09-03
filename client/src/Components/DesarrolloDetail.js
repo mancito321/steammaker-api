@@ -17,7 +17,7 @@ class DesarrolloDetail extends Component {
     };
   }
   componentDidMount(){
-    axios.get('159.89.229.68:5000/challenge/desarrollo',{
+    axios.get('http://159.89.229.68:5000/challenge/desarrollo',{
       params:{
         id:this.props.id,
         group:this.props.group

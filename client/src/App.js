@@ -26,7 +26,7 @@ class App extends Component {
   console.log(session);
   if (session!=null && this.state.permission==0) {
 
-        axios.get('http://localhost:5000/api/auth/me',{
+        axios.get('http://159.89.229.68:5000/api/auth/me',{
           headers: {
               'content-type': 'multipart/form-data',
               'x-access-token':session.token
@@ -61,7 +61,7 @@ class App extends Component {
     console.log(session);
     if (session!=null && this.state.permission==0) {
 
-          axios.get('http://localhost:5000/api/auth/me',{
+          axios.get('http://159.89.229.68:5000/api/auth/me',{
             headers: {
                 'content-type': 'multipart/form-data',
                 'x-access-token':session.token
@@ -93,7 +93,7 @@ class App extends Component {
             update:()=>{if (this.state.permission==0) {
 
                    let session=JSON.parse(sessionStorage.getItem('mySteamM'))
-                   axios.get('http://localhost:5000/api/auth/me',{
+                   axios.get('http://159.89.229.68:5000/api/auth/me',{
                      headers: {
                          'content-type': 'multipart/form-data',
                          'x-access-token':session.token
