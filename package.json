@@ -5,8 +5,8 @@
   "main": "server.js",
   "engines" : { "node" : ">=10.9.0" },
   "scripts": {
-    "initAll":"npm install -g concurrently && npm install -g serve -p 8080",
-    "client": "cd client && serve -s build",
+    "initAll":"npm install -g concurrently && npm install -g serve",
+    "client": "cd client && serve -s build -p 8080",
     "server": "node server.js",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
