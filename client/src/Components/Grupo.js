@@ -51,7 +51,7 @@ class Grupo extends Component {
 
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/group/detail',{
+    axios.get('159.89.229.68:5000/group/detail',{
       params:{
         id: this.props.id
       }
@@ -68,7 +68,7 @@ class Grupo extends Component {
     // always executed
      });
 
-     axios.get('http://localhost:5000/group/participants',{
+     axios.get('159.89.229.68:5000/group/participants',{
       params:{
         id: this.props.id
       }
@@ -92,7 +92,7 @@ class Grupo extends Component {
     // always executed
 
      });
-     axios.get('http://localhost:5000/group/challenge',{
+     axios.get('159.89.229.68:5000/group/challenge',{
       params:{
         id: this.props.id
       }

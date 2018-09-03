@@ -13,44 +13,44 @@ class Challenge extends Component {
     this.state = {
       session:sessionchk,
       challenge : []
-    };           
-  } 
+    };
+  }
   componentDidMount(){
-    axios.get('http://localhost:5000/challenge/actual',{
+    axios.get('159.89.229.68:5000/challenge/actual',{
       params:{
         id:this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        challenge: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
-     .then(()=> {     
-    // always executed    
-     }); 
+     .then(()=> {
+    // always executed
+     });
   }
 
-  render() {       
+  render() {
     if (this.state.session) {
       return <Redirect to='/login' />
     }else {
       try{
-        return (  
+        return (
       <Row  className="margin_container">
        <Col md="12"><h4 className="subtitulo">Último reto</h4></Col>
          <Col md="4" xs="12">
          <h5>{this.state.challenge[0].name}</h5>
          <p>{this.state.challenge[0].contenido}</p>
-          <h5>Fecha de publicación</h5>        
-         
-        <p>{this.state.challenge[0].ca}</p>       
-             <h5>Finalizado</h5>        
-        
-          <p>{this.state.challenge[0].fn}</p>         
+          <h5>Fecha de publicación</h5>
+
+        <p>{this.state.challenge[0].ca}</p>
+             <h5>Finalizado</h5>
+
+          <p>{this.state.challenge[0].fn}</p>
         </Col>
             <Col md="4" xs="12">
             <h5>Documentos</h5>
@@ -60,7 +60,7 @@ class Challenge extends Component {
             <h5>Desarrollos</h5>
              <Develops key="develops" id={this.state.challenge[0].id}/>
         </Col>
-      </Row>     
+      </Row>
       );
       }catch(error){
        return(

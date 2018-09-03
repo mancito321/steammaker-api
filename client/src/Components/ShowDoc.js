@@ -13,7 +13,7 @@ componentDidMount (){
 
 }
   componentWillMount(){
-    axios.get('http://localhost:5000/api/auth/files',{
+    axios.get('159.89.229.68:5000/api/auth/files',{
       params: {
       id: this.props.retoid  }
     })

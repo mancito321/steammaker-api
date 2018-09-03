@@ -16,7 +16,7 @@ class Me extends Component {
     };
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/users/user/all')
+    axios.get('159.89.229.68:5000/users/user/all')
    .then((response)=>  {
       this.setState({
        user: response.data
@@ -31,7 +31,7 @@ class Me extends Component {
   }
   testToken = ()=>{
     let session=JSON.parse(sessionStorage.getItem('mySteamM'))
-    axios.get('http://localhost:5000/api/auth/me',{
+    axios.get('159.89.229.68:5000/api/auth/me',{
       headers: {
           'content-type': 'multipart/form-data',
           'x-access-token':session.token

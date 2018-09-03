@@ -27,7 +27,7 @@ class Log extends Component {
   }
 
   handleSubmit (event) {
-    axios.post('http://localhost:5000/api/auth/login', {
+    axios.post('159.89.229.68:5000/api/auth/login', {
       user: this.state.text,
       password: this.state.password
     })
@@ -49,8 +49,8 @@ class Log extends Component {
       return <Redirect to='/reto' />
     } else{
       console.log(this.state.logged);
-      return ( 
-      <Container fluid="true">      
+      return (
+      <Container fluid="true">
          <Row className="center_full">
           <Col md="9" xs="12" className="background_login"></Col>
             <Col md="3" xs="12" >
@@ -86,13 +86,13 @@ class Log extends Component {
                     >
                     Login
                   </Button>
-                  
+
                 </form>
               </div>
               </Container>
             </Col>
-          </Row> 
-        </Container>       
+          </Row>
+        </Container>
       )
     }
 

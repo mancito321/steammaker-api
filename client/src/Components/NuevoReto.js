@@ -86,7 +86,7 @@ class NuevoReto extends Component {
         }
     }
     console.log(config);
-    axios.post('http://localhost:5000/api/auth/newreto', formData,config)
+    axios.post('159.89.229.68:5000/api/auth/newreto', formData,config)
     .then( (response) =>{
       console.log(response);
       this.setState({ successM: true });

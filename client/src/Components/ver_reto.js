@@ -56,7 +56,7 @@ class Retos extends Component {
     };
   }
     componentDidMount(){
-    axios.get('http://localhost:5000/challenge/challenges')
+    axios.get('159.89.229.68:5000/challenge/challenges')
    .then((response)=>  {
       this.setState({
        retos: response.data
@@ -72,7 +72,7 @@ class Retos extends Component {
      });
   }
   updateActive(){
-    axios.post('http://localhost:5000/challenge/active/edit',{
+    axios.post('159.89.229.68:5000/challenge/active/edit',{
       id:this.state.edit,
       active:this.state.active
     })
@@ -90,7 +90,7 @@ class Retos extends Component {
   }
 
     updateActiveA(){
-    axios.post('http://localhost:5000/challenge/active/edit',{
+    axios.post('159.89.229.68:5000/challenge/active/edit',{
       id:this.state.edit,
       active:this.state.activeA
     })

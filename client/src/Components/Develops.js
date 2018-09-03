@@ -10,41 +10,41 @@ class Documents extends Component {
     this.state = {
       session:sessionchk,
       develops : []
-    };           
-  } 
+    };
+  }
   componentDidMount(){
-    axios.get('http://localhost:5000/challenge/challenge/develops',{
+    axios.get('159.89.229.68:5000/challenge/challenge/develops',{
       params:{
         id: this.props.id
       }
     })
-   .then((response)=>  {    
+   .then((response)=>  {
       this.setState({
        develops: response.data
       });
     })
     .catch((error)=>  {
-    // handle error  
+    // handle error
      })
      .then(()=> {
-    // always executed  
-     }); 
+    // always executed
+     });
   }
 
-  
-   
-  
+
+
+
 
   render() {
-      return (  
-         <Row className="develops"> 
+      return (
+         <Row className="develops">
          {
            this.state.develops.map(item=>{
              return <Col md="12" key={item.id.toString()}><p>{item.group_name}<br></br><small>{item.ca}</small></p></Col>
            })
         }
-          
-         
+
+
          </Row>
       );
     }

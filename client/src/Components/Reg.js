@@ -12,11 +12,11 @@ class Log extends Component {
       user: "",
       rol: "",
       email: "",
-      password: ""    
+      password: ""
     };
   }
 
-  validateForm() { 
+  validateForm() {
     return true ;
   }
 
@@ -27,8 +27,8 @@ class Log extends Component {
   }
 
   handleSubmit = event => {
-    axios.post('http://localhost:5000/api/auth/register', {
-      user: this.state.text,      
+    axios.post('159.89.229.68:5000/api/auth/register', {
+      user: this.state.text,
       rol: this.state.number,
       email: this.state.email,
       password: this.state.password
@@ -65,7 +65,7 @@ class Log extends Component {
                       value={this.state.text}
                       onChange={this.handleChange.bind(this)}
                       />
-                  </FormGroup>  
+                  </FormGroup>
                      <FormGroup id="rol">
                     <Label>rol</Label>
                     <Input
@@ -74,7 +74,7 @@ class Log extends Component {
                       value={this.state.number}
                       onChange={this.handleChange.bind(this)}
                       />
-                  </FormGroup>  
+                  </FormGroup>
                      <FormGroup id="email">
                     <Label>email</Label>
                     <Input
@@ -83,7 +83,7 @@ class Log extends Component {
                       value={this.state.email}
                       onChange={this.handleChange.bind(this)}
                       />
-                  </FormGroup> 
+                  </FormGroup>
                      <FormGroup id="password">
                     <Label>password</Label>
                     <Input
@@ -92,7 +92,7 @@ class Log extends Component {
                       value={this.state.password}
                       onChange={this.handleChange.bind(this)}
                       />
-                  </FormGroup>                
+                  </FormGroup>
                   <Button
                     block
                     disabled={!this.validateForm()}

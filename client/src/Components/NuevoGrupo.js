@@ -54,7 +54,7 @@ class NuevoGrupo extends Component {
       [event.target.id]: event.target.value
     });
 
-    axios.get('http://localhost:5000/group/franchises',{
+    axios.get('159.89.229.68:5000/group/franchises',{
       params:{
         id: this.state.ie
       }
@@ -70,11 +70,11 @@ class NuevoGrupo extends Component {
     .then(()=> {
       // always executed
     });
-  } 
+  }
 
   componentDidMount(){
 
-    axios.get('http://localhost:5000/group/institution')
+    axios.get('159.89.229.68:5000/group/institution')
     .then((response)=>  {
       this.setState({
         institutions: response.data
@@ -119,7 +119,7 @@ class NuevoGrupo extends Component {
       }
     }
     console.log(config);
-    axios.post('http://localhost:5000/api/auth/newgroup', formData,config)
+    axios.post('159.89.229.68:5000/api/auth/newgroup', formData,config)
     .then( (response) =>{
       console.log(response);
       this.setState({

@@ -14,7 +14,7 @@ class Documents extends Component {
     };
   }
   componentDidMount(){
-    axios.get('http://localhost:5000/challenge/challenge/documentation',{
+    axios.get('159.89.229.68:5000/challenge/challenge/documentation',{
       params:{
         id: this.props.id
       }
