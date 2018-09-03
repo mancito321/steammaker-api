@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "update current framework to other technologies ",
   "main": "server.js",
+  "engines" : { "node" : ">=10.9" },
   "scripts": {
     "installServ":"npm install",
     "installCl":"cd client && npm install",
