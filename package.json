@@ -3,15 +3,11 @@
   "version": "1.0.0",
   "description": "update current framework to other technologies ",
   "main": "server.js",
-  "engines" : { "node" : ">=10.9" },
+  "engines" : { "node" : ">=10.9.0" },
   "scripts": {
-    "installServ":"npm install",
-    "installCl":"cd client && npm install",
+    "initAll":"npm install -g concurrently && npm install -g serve",
     "client": "cd client && serve -s build",
     "server": "node server.js",
-    "setBuild": "cd client && npm run build",
-    "setServe": "npm install -g serve",
-    "install" : "concurrently --kill-others-on-fail \"npm run installServ\" \"npm run installCl\"",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "author": "",
@@ -19,7 +15,6 @@
   "dependencies": {
     "bcrypt": "^3.0.0",
     "body-parser": "^1.18.3",
-    "concurrently": "^3.6.1",
     "connect-redis": "^3.3.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
