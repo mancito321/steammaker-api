@@ -4,8 +4,13 @@
   "description": "update current framework to other technologies ",
   "main": "server.js",
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon server.js",
+    "installServ":"npm install",
+    "installCl":"cd client && npm install",
+    "client": "cd client && serve -s build",
+    "server": "node server.js",
+    "setBuild": "cd client && npm run build",
+    "setServe": "npm install -g serve",
+    "install" : "concurrently --kill-others-on-fail \"npm run installServ\" \"npm run installCl\"",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "author": "",
