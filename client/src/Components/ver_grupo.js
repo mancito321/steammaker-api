@@ -71,6 +71,8 @@ class Group extends Component {
     this.setState({
       detail: event.target.name
     });
+    console.log('este es el grupo:');
+    console.log(event.target.name);
 
   }
   render() {
