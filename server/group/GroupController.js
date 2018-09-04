@@ -30,7 +30,7 @@ router.get('/group',(req,res)=>{
 
 // ALL GROUP LIMIT
 router.get('/group/limit',(req,res)=>{
-  connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group ORDER BY punctuation DESC LIMIT 20;`, function (error, results, fields) {
+  connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group ORDER BY punctuation DESC LIMIT 5;`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
