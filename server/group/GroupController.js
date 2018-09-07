@@ -28,6 +28,16 @@ router.get('/group',(req,res)=>{
   //connection.end();
 });
 
+// ALL name
+router.get('/busy',(req,res)=>{
+  connection.query(`SELECT COUNT(*) from steammakers.${req.query.tabla}  where ${req.query.campo} = '${req.query.valor}'`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
 // ALL GROUP LIMIT
 router.get('/group/limit',(req,res)=>{
   connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group ORDER BY punctuation DESC LIMIT 5;`, function (error, results, fields) {
