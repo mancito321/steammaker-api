@@ -20,7 +20,7 @@ router.get('/institution',(req,res)=>{
 
 // ALL GROUP
 router.get('/group',(req,res)=>{
-  connection.query(`SELECT gr.id,gr.name,i.name as 'iname',fr.name as 'frname',u.user,(SELECT numero FROM participants WHERE id_group = gr.id) as 'participantes' FROM steammakers.group gr JOIN franchise fr on gr.id_franchise = fr.id JOIN institution i on i.id = fr.id_institution JOIN users u on u.id = gr.mt;`, function (error, results, fields) {
+  connection.query(`SELECT gr.id,gr.name,i.name as 'iname',fr.name as 'frname',u.nombre,(SELECT numero FROM participants WHERE id_group = gr.id) as 'participantes' FROM steammakers.group gr JOIN franchise fr on gr.id_franchise = fr.id JOIN institution i on i.id = fr.id_institution JOIN users u on u.id = gr.mt;`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;

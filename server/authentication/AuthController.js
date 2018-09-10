@@ -107,8 +107,9 @@ router.post('/newgroup',upload.any(), (req, res)=> {
       // Respondemos
       let formData = req.files;
       formData.forEach((file)=>{
-        cdnUse.upFiles('steammakers/grupo/'+grupo.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
+        cdnUse.upFiles('steammakers/grupo/'+grupo.insertId,file.fieldname+'.png')
       })
+      // +file.originalname.split('.')[1],file.buffer
       // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
       // Nuevos participantes
       let newsql = `INSERT INTO participants(id_group,name) VALUES(${grupo.insertId},'${req.body.participantes}')`
