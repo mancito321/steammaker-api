@@ -30,8 +30,18 @@ router.get('/group',(req,res)=>{
 
 // ALL name
 router.get('/busy',(req,res)=>{
-  connection.query(`SELECT COUNT(*) from steammakers.${req.query.tabla}  where ${req.query.campo} = '${req.query.valor}'`, function (error, results, fields) {
-    if (error) throw error;
+  connection.query(`SELECT COUNT(*) as 'contador' from steammakers.group where name = '${req.query.valor}'`, function (error, results, fields) {
+    if (error) throw error;   
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
+// ALL name
+router.get('/busyUser',(req,res)=>{
+  connection.query(`SELECT COUNT(*) as 'contador' from steammakers.users where user = '%${req.query.valor}'`, function (error, results, fields) {
+    if (error) throw error;   
     res.send(results)
     return results;
   });
@@ -47,6 +57,7 @@ router.get('/group/limit',(req,res)=>{
   });
   //connection.end();
 });
+
 // GROUP
 router.get('/detail:id?',(req,res)=>{
   connection.query(`SELECT gr.id,gr.name,gr.punctuation,i.name as 'iname',fr.name as 'frname',u.user,(SELECT numero FROM participants WHERE id_group = gr.id) as 'participantes' FROM steammakers.group gr JOIN franchise fr on gr.id_franchise = fr.id JOIN institution i on i.id = fr.id_institution JOIN users u on u.id = gr.mt WHERE gr.id = ${req.query.id};`, function (error, results, fields) {

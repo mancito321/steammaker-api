@@ -102,12 +102,13 @@ router.post('/newgroup',upload.any(), (req, res)=> {
     //Insertamos en la db
 
     connection.query(sql,function (err, grupo) {
+        console.log(grupo.insertId)
       if (err)
       if (err) return res.status(500).send("There was a problem registering the group.")
       // Respondemos
       let formData = req.files;
       formData.forEach((file)=>{
-        cdnUse.upFiles('steammakers/grupo/'+grupo.insertId,file.fieldname+'.png')
+        cdnUse.upFiles('steammakers/grupo/'+grupo.insertId,file.fieldname+'.png',file.buffer)
       })
       // +file.originalname.split('.')[1],file.buffer
       // cdnUse.upFiles('steammakers/'+req.body.text,'esunpdf.'+formData[0].originalname.split('.')[1],formData[0].buffer)
