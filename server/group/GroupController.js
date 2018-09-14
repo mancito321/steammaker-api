@@ -40,7 +40,7 @@ router.get('/busy',(req,res)=>{
 
 // ALL name
 router.get('/busyUser',(req,res)=>{
-  connection.query(`SELECT COUNT(*) as 'contador' from steammakers.users where user = '%${req.query.valor}'`, function (error, results, fields) {
+  connection.query(`SELECT COUNT(*) as 'contador' from steammakers.users where user = '${req.query.valor}'`, function (error, results, fields) {
     if (error) throw error;   
     res.send(results)
     return results;
@@ -50,8 +50,8 @@ router.get('/busyUser',(req,res)=>{
 
 // ALL GROUP LIMIT
 router.get('/group/limit',(req,res)=>{
-  connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group ORDER BY punctuation DESC LIMIT 5;`, function (error, results, fields) {
-    if (error) throw error;
+  connection.query(`SELECT name,punctuation as 'puntos' from steammakers.group  WHERE active = 1 ORDER BY punctuation DESC LIMIT 5`, function (error, results, fields) {
+    if (error) throw error;   
     res.send(results)
     return results;
   });

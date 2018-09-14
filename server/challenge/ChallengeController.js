@@ -18,7 +18,7 @@ router.get('/challenge/all',(req,res)=>{
   //connection.end();
 });
 router.get('/challenge/last',(req,res)=>{
-  connection.query(`SELECT * FROM challenge WHERE active = 1 ORDER BY ca DESC LIMIT 1`, function (error, results, fields) {
+  connection.query(`SELECT * FROM challenge WHERE active = 1 ORDER BY id DESC LIMIT 1`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -45,8 +45,9 @@ router.get('/challenge/documentation:id?',(req,res)=>{
 });
 // DEVELOPS
 router.get('/challenge/develops:id?',(req,res)=>{
-  connection.query(`SELECT gr.name as 'group_name',dev.* FROM challenge_ok dev JOIN steammakers.group gr on gr.id = dev.id_group where dev.id_challenge = ${req.query.id}`, function (error, results, fields) {
+  connection.query(`SELECT count(*) as 'desarrollos' FROM challenge_ok dev JOIN steammakers.group gr on gr.id = dev.id_group where dev.id_challenge = ${req.query.id}`, function (error, results, fields) {
     if (error) throw error;
+    console.log(results)
     res.send(results)
     return results;
   });
