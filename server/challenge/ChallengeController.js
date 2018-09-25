@@ -100,7 +100,19 @@ router.get('/user/:id',(req,res)=>{
 
 router.get('/desarrollo',(req,res)=>{
   console.log(req.params)
-  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.user as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where ch.id = ${req.query.id};`, function (error, results, fields) {
+  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.nombre as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where ch.id = ${req.query.id};`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
+//desarrollos reto
+
+router.get('/desarrolloChallenge',(req,res)=>{
+  console.log(req.query.idChall)
+  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.nombre as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where ch.id = ${req.query.idChall} and gr.id = ${req.query.idGroup};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -109,7 +121,7 @@ router.get('/desarrollo',(req,res)=>{
 });
 router.get('/desarrolloDet',(req,res)=>{
   console.log(req.params)
-  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.user as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where gr.id = ${req.query.group} and ch.id = ${req.query.id};`, function (error, results, fields) {
+  connection.query(`SELECT ok.id,gr.id, gr.punctuation, ch.id as 'chid' ,gr.name as 'gname',u.nombre as 'uname', ok.ca FROM challenge_ok ok JOIN steammakers.group gr on gr.id = ok.id_group JOIN users u on u.id = gr.mt JOIN challenge ch on ch.id = ok.id_challenge where gr.id = ${req.query.group} and ch.id = ${req.query.id};`, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
@@ -119,7 +131,18 @@ router.get('/desarrolloDet',(req,res)=>{
 
 
 router.get('/challenges',(req,res)=>{
-  connection.query(`SELECT c.*,(SELECT COUNT(*) FROM challenge_ok where id_challenge = c.id) as 'desarrollos' FROM challenge c`, function (error, results, fields) {
+
+  connection.query(`SELECT c.*,(SELECT COUNT(*) FROM challenge_ok where id_challenge = c.id) as 'desarrollos' FROM challenge c WHERE active = 1`, function (error, results, fields) {
+    if (error) throw error;
+    res.send(results)
+    return results;
+  });
+  //connection.end();
+});
+
+router.get('/challengesAdmin',(req,res)=>{
+
+  connection.query(`SELECT c.*,(SELECT COUNT(*) FROM challenge_ok where id_challenge = c.id) as 'desarrollos' FROM challenge c `, function (error, results, fields) {
     if (error) throw error;
     res.send(results)
     return results;
