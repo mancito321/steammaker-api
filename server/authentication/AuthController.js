@@ -55,23 +55,24 @@ router.post('/newfiletest',upload.any(), (req, res)=> {
 });
 //NuevoReto
 router.post('/newreto',upload.any(), (req, res)=> {
+  console.log('new reto');
   var token = req.headers['x-access-token']
   if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
   jwt.verify(token, config.secret, function(err, decoded) {
     if (err) return res.status(500).send({ auth: false, message: 'Failed to authenticate token.'+err });
     //Creamos los valores a colocar
     let today= new Date();
-    let activo=0;
-    req.body.activo ? activo =1:acivo=0;
-    let sql = `INSERT INTO challenge(name,ca,fn,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','','${activo}','${req.body.TextReto}','${req.body.recursos}')`;
+    console.log(req.body.activo);
+    let sql = `INSERT INTO challenge(name,ca,active,contenido,recursos) VALUES ('${req.body.NameReto}','${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}','${req.body.activo}','${req.body.TextReto}','${req.body.recursos}')`;
     //Insertamos en la db
     let thisId=0;
+    console.log(sql);
     connection.query(sql,function (err, reto) {
       if (err) return res.status(500).send("There was a problem registering the challenge.")
       // Respondemos
       //
+      console.log('uploading files');
       let formData = req.files;
-      console.log(formData);
       formData.forEach((file)=>{
 
         cdnUse.upFiles('steammakers/reto/retos/'+reto.insertId,file.fieldname+'.'+file.originalname.split('.')[1],file.buffer)
